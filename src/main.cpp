@@ -1,6 +1,5 @@
 #include <cstdlib>
 #include <iostream>
-#include <unistd.h>
 #include <cmath>
 
 #include "glm/glm.hpp"
@@ -8,20 +7,9 @@
 #include "glm/gtc/type_ptr.hpp"
 
 #define STB_IMAGE_IMPLEMENTATION
-
 #include "stb/stb_image.h"
 #include "main.h"
 
-// camera
-float g_x = 10;
-float g_y = 2.3;
-float g_z = 10;
-float g_yaw = -45;
-float g_pitch = 0;
-
-float lookX;
-float lookY;
-float lookZ;
 
 // light
 float light_atX = -8;
@@ -66,11 +54,11 @@ void draw_cube(
         bool need_shadow = false
 );
 
+void draw_cross();
+
 void set_MVP_matrix();
 
 void set_sky_light(GLfloat R, GLfloat G, GLfloat B, bool isDepth);
-
-int have_block(int x, int y, int z);
 
 void get_chunk_index(float x, float z, int *_x, int *_z);
 
@@ -104,13 +92,13 @@ void glfw_init(void) {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 
-    window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "my craft: 去玩 Minecraft 吧", NULL, NULL);
+    window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "my craft: 也试试泰拉瑞亚吧", NULL, NULL);
     if (!window) {
         glfwTerminate();
         exit(EXIT_FAILURE);
     }
 
-    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+//    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     glfwSetInputMode(window, GLFW_STICKY_KEYS, GLFW_TRUE);
     glfwSetKeyCallback(window, key_callback);
     glfwSetCursorPosCallback(window, cursor_position_callback);
@@ -163,7 +151,7 @@ void gl_texture_init(void) {
 
 void draw_map(bool isDepth) {
     int current_chunk_x, current_chunk_z;
-    get_chunk_index(g_x, g_z, &current_chunk_x, &current_chunk_z);
+    get_chunk_index(Physics::g_x, Physics::g_z, &current_chunk_x, &current_chunk_z);
 
     for (int dx = -1; dx <= 1; dx++) {
         for (int dz = -1; dz <= 1; dz++) {
@@ -175,7 +163,7 @@ void draw_map(bool isDepth) {
                 continue;
             }
 
-            chunk *c = world_map[chunk_base_x][chunk_base_z];
+            World::chunk *c = World::world_map[chunk_base_x][chunk_base_z];
 
             for (int in_x = 0; in_x < 16; in_x++) {
                 for (int in_z = 0; in_z < 16; in_z++) {
@@ -190,17 +178,17 @@ void draw_map(bool isDepth) {
                             else if (block_id == id_brick) imgs = (uint8_t *) img_brick;
                             else if (block_id == id_log_oak) imgs = (uint8_t *) img_log;
 
-                            float dx0 = chunk_base_x * 16 + in_x - g_x;
-                            float dy0 = in_y - g_y;
-                            float dz0 = chunk_base_z * 16 + in_z - g_z;
+                            float dx0 = chunk_base_x * 16 + in_x - Physics::g_x;
+                            float dy0 = in_y - Physics::g_y;
+                            float dz0 = chunk_base_z * 16 + in_z - Physics::g_z;
                             float block_to_eye_len = sqrt(dx0 * dx0 + dy0 * dy0 + dz0 * dz0);
                             dx0 = dx0 / block_to_eye_len;
                             dy0 = dy0 / block_to_eye_len;
                             dz0 = dz0 / block_to_eye_len;
 
-                            float dx1 = lookX - g_x;
-                            float dy1 = lookY - g_y;
-                            float dz1 = lookZ - g_z;
+                            float dx1 = Physics::lookX - Physics::g_x;
+                            float dy1 = Physics::lookY - Physics::g_y;
+                            float dz1 = Physics::lookZ - Physics::g_z;
 
                             if (dx0 * dx1 + dy0 * dy1 + dz0 * dz1 > 0) {
                                 if (block_id == id_grass) {
@@ -274,7 +262,7 @@ void draw_cube(
     //             │ 2  │
     //             │btm │
     //             └────┘
-    if (!have_block(atX, atY + 1, atZ)) {
+    if (!World::have_block(atX, atY + 1, atZ)) {
         GLfloat arrtop[48] = {
                 cube[0][0], cube[0][1], cube[0][2], 0, 0, 0, 1, 0,
                 cube[1][0], cube[1][1], cube[1][2], 1, 0, 0, 1, 0,
@@ -294,7 +282,7 @@ void draw_cube(
         glDeleteVertexArrays(1, &buffer);
     }
 
-    if (!have_block(atX, atY - 1, atZ)) {
+    if (!World::have_block(atX, atY - 1, atZ)) {
         GLfloat arrbtm[48] = {
                 cube[3][0], cube[3][1], cube[3][2], 0, 0, 0, -1, 0,
                 cube[7][0], cube[7][1], cube[7][2], 0, 1, 0, -1, 0,
@@ -314,7 +302,7 @@ void draw_cube(
         glDeleteVertexArrays(1, &buffer);
     }
 
-    if (!have_block(atX - 1, atY, atZ)) {
+    if (!World::have_block(atX - 1, atY, atZ)) {
         GLfloat arrlft[48] = {
                 cube[7][0], cube[7][1], cube[7][2], 0, 0, -1, 0, 0,
                 cube[3][0], cube[3][1], cube[3][2], 1, 0, -1, 0, 0,
@@ -334,7 +322,7 @@ void draw_cube(
         glDeleteVertexArrays(1, &buffer);
     }
 
-    if (!have_block(atX + 1, atY, atZ)) {
+    if (!World::have_block(atX + 1, atY, atZ)) {
         GLfloat arrrit[48] = {
                 cube[2][0], cube[2][1], cube[2][2], 0, 0, 1, 0, 0,
                 cube[6][0], cube[6][1], cube[6][2], 1, 0, 1, 0, 0,
@@ -354,7 +342,7 @@ void draw_cube(
         glDeleteVertexArrays(1, &buffer);
     }
 
-    if (!have_block(atX, atY, atZ + 1)) {
+    if (!World::have_block(atX, atY, atZ + 1)) {
         GLfloat arrfrt[48] = {
                 cube[3][0], cube[3][1], cube[3][2], 0, 0, 0, 0, 1,
                 cube[2][0], cube[2][1], cube[2][2], 1, 0, 0, 0, 1,
@@ -374,7 +362,7 @@ void draw_cube(
         glDeleteVertexArrays(1, &buffer);
     }
 
-    if (!have_block(atX, atY, atZ - 1)) {
+    if (!World::have_block(atX, atY, atZ - 1)) {
         GLfloat arrbk[48] = {
                 cube[6][0], cube[6][1], cube[6][2], 0, 0, 0, 0, -1,
                 cube[4][0], cube[4][1], cube[4][2], 1, 1, 0, 0, -1,
@@ -395,29 +383,59 @@ void draw_cube(
     }
 }
 
-void set_MVP_matrix() {
-    GLfloat yaw = g_yaw / 180.0 * M_PI;
-    GLfloat pitch = g_pitch / 180 * M_PI;
-    double fov = 45.0 / 180.0 * M_PI;
+void draw_cross() {
+    GLfloat vertices[] = {-0.01, 0, 0,
+                        0.01, 0, 0,
+                        0, 0.01 * WINDOW_WIDTH / WINDOW_HEIGHT, 0,
+                        0, -0.01 * WINDOW_WIDTH / WINDOW_HEIGHT, 0};
 
-    lookX = g_x + cos(pitch) * sin(yaw);
-    lookY = g_y + sin(pitch);
-    lookZ = g_z - cos(pitch) * cos(yaw);
+    GLuint vertexBuffer;
+    glGenVertexArrays(1, &vertexBuffer);
+    glGenBuffers(1, &vertexBuffer);
+    if (!vertexBuffer) {
+        std::clog << "Failed to create buffer object" << std::endl;
+    }
+
+    glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(GLfloat) * 12, vertices, GL_STATIC_DRAW);
+
+    uint64_t bpe = sizeof(GLfloat);
+
+    glVertexAttribPointer(cross_program.a_Position, 3, GL_FLOAT, false, 3 * bpe, 0);
+    glEnableVertexAttribArray(cross_program.a_Position);
+
+    glUniform1i(cross_program.fbo, 31);
+
+    glLineWidth(3);
+    glDrawArrays(GL_LINES, 0, 4);
+
+    glDeleteBuffers(1, &vertexBuffer);
+    glDeleteVertexArrays(1, &vertexBuffer);
+}
+
+void set_MVP_matrix() {
+    GLfloat yaw = Physics::g_yaw / 180.0 * M_PI;
+    GLfloat pitch = Physics::g_pitch / 180 * M_PI;
+    double fov = 60.0 / 180.0 * M_PI;
+
+    Physics::lookX = Physics::g_x + cos(pitch) * sin(yaw);
+    Physics::lookY = Physics::g_y + sin(pitch);
+    Physics::lookZ = Physics::g_z - cos(pitch) * cos(yaw);
 
     glm::mat4 gMatrixM(1.0f);
     glUniformMatrix4fv(normal_program.M, 1, false, glm::value_ptr(gMatrixM));
 
     glm::mat4 gMatrixV;
     gMatrixV = glm::lookAt(
-            glm::vec3(g_x, g_y, g_z),
-            glm::vec3(lookX, lookY, lookZ),
+            glm::vec3(Physics::g_x, Physics::g_y, Physics::g_z),
+            glm::vec3(Physics::lookX, Physics::lookY, Physics::lookZ),
             glm::vec3(0.0, 1.0, 0.0)
     );
     glUniformMatrix4fv(normal_program.V, 1, false, glm::value_ptr(gMatrixV));
 
     glm::mat4 gMatrixP;
 //    gMatrixP = glm::perspective(40.0, (double)WINDOW_WIDTH / WINDOW_HEIGHT * 0.8, 0.1, 10000.0);
-    gMatrixP = glm::perspectiveFov(fov, (double) WINDOW_WIDTH, (double) WINDOW_HEIGHT, 0.1, 100.0);
+    gMatrixP = glm::perspectiveFov(fov, (double) WINDOW_WIDTH, (double) WINDOW_HEIGHT, 0.01, 100.0);
     glUniformMatrix4fv(normal_program.P, 1, false, glm::value_ptr(gMatrixP));
 }
 
@@ -449,22 +467,6 @@ void set_sky_light(GLfloat R, GLfloat G, GLfloat B, bool isDepth) {
         glUniformMatrix4fv(normal_program.M_FromLight, 1, false, glm::value_ptr(lightM));
         glUniformMatrix4fv(normal_program.V_FromLight, 1, false, glm::value_ptr(lightV));
         glUniformMatrix4fv(normal_program.P_FromLight, 1, false, glm::value_ptr(lightP));
-    }
-}
-
-int have_block(int x, int y, int z) {
-    if (x >= 0 && z >= 0 && y >= 0) {
-        int chunk_x = x / 16;
-        int chunk_z = z / 16;
-        int in_x = x % 16;
-        int in_z = z % 16;
-
-        chunk *c = world_map[chunk_x][chunk_z];
-        if (c == nullptr) return 0;
-
-        return c->block[in_x][y][in_z];
-    } else {
-        return 0;
     }
 }
 
@@ -527,8 +529,10 @@ void turn_to_inner_mode(GLfloat vertices[48]) {
 }
 
 void begin(void) {
-    generate_map();
-    build_house();
+    World::generate_map();
+    World::build_house();
+    Physics::init();
+
 
     while (!glfwWindowShouldClose(window)) {
         glBindBuffer(GL_FRAMEBUFFER, fbo);
@@ -540,7 +544,7 @@ void begin(void) {
         set_sky_light(1, 0.99, 0.95, true);
         draw_map(true);
 
-        glBindBuffer(GL_FRAMEBUFFER, 0);
+        glBindBuffer(GL_FRAMEBUFFER, fbo);
         glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
         glClearColor(172.0 / 255.0, 224.0 / 255.0, 252.0 / 255.0, 1.0);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -550,6 +554,8 @@ void begin(void) {
         set_sky_light(1, 0.99, 0.95, false);
         draw_map(false);
 
+        glUseProgram(cross_program.program);
+        draw_cross();
 
         glfwPollEvents();
         key_handler();

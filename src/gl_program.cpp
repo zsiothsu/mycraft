@@ -1,16 +1,16 @@
 #include "gl_program.h"
 #include <iostream>
 #include <fstream>
-#include <unistd.h>
 #include <cstring>
+#include <unistd.h>
+
 
 NormalProgram normal_program;
 ShadowProgram shadow_program;
+CrossProgram cross_program;
 
-char *normal_vertex_shader;
-char *normal_fragment_shader;
-char *shadow_vertex_shader;
-char *shadow_fragment_shader;
+char *vertex_shader_buf;
+char *fragment_shader_buf;
 
 std::string pwd;
 
@@ -22,62 +22,16 @@ void program_init(void) {
 
     create_normal_program();
     create_shadow_program();
+    create_cross_program();
     std::clog << "[SHADER] Shader program loaded" << std::endl;
 }
 
 void create_normal_program(void) {
-    std::ifstream t;
-    int length;
-
-    t.open((pwd + "./shader/normal_vertext_shader.glsl").c_str());
-    t.seekg(0, std::ios::end);
-    length = t.tellg();
-    t.seekg(0, std::ios::beg);
-    normal_vertex_shader = new char[length + 2];
-    t.read(normal_vertex_shader, length);
-    normal_vertex_shader[length] = '\n';
-    normal_vertex_shader[length + 1] = 0;
-    t.close();
-
-    t.open((pwd + "./shader/normal_fragment_shader.glsl").c_str());
-    t.seekg(0, std::ios::end);
-    length = t.tellg();
-    t.seekg(0, std::ios::beg);
-    normal_fragment_shader = new char[length + 2];
-    t.read(normal_fragment_shader, length);
-    normal_fragment_shader[length] = '\n';
-    normal_fragment_shader[length + 1] = 0;
-    t.close();
-
-    GLint success;
-    GLchar infoLog[512];
-
-    normal_program.vertex_shader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(normal_program.vertex_shader, 1, &normal_vertex_shader, NULL);
-    glCompileShader(normal_program.vertex_shader);
-
-    glGetShaderiv(normal_program.vertex_shader, GL_COMPILE_STATUS, &success);
-    if (!success) {
-        glGetShaderInfoLog(normal_program.vertex_shader, 512, NULL, infoLog);
-        std::cerr << "[COMPILER] " << infoLog << std::endl;
-        exit(EXIT_FAILURE);
-    }
-
-    normal_program.fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(normal_program.fragment_shader, 1, &normal_fragment_shader, NULL);
-    glCompileShader(normal_program.fragment_shader);
-
-    glGetShaderiv(normal_program.fragment_shader, GL_COMPILE_STATUS, &success);
-    if (!success) {
-        glGetShaderInfoLog(normal_program.fragment_shader, 512, NULL, infoLog);
-        std::cerr << "[COMPILER] " << infoLog << std::endl;
-        exit(EXIT_FAILURE);
-    }
-
-    normal_program.program = glCreateProgram();
-    glAttachShader(normal_program.program, normal_program.vertex_shader);
-    glAttachShader(normal_program.program, normal_program.fragment_shader);
-    glLinkProgram(normal_program.program);
+    read_compile_program(
+        (pwd + "./shader/normal_vertext_shader.glsl").c_str(),
+        (pwd + "./shader/normal_fragment_shader.glsl").c_str(),
+        &normal_program
+    );
 
     {
         normal_program.a_Position = glGetAttribLocation(normal_program.program, "a_Position");
@@ -100,62 +54,11 @@ void create_normal_program(void) {
 }
 
 void create_shadow_program(void) {
-    std::ifstream t;
-    int length;
-
-    std::string content;
-    t.open((pwd + "./shader/shadow_vertext_shader.glsl").c_str());
-    t.seekg(0, std::ios::end);
-    length = t.tellg();
-    t.seekg(0, std::ios::beg);
-    shadow_vertex_shader = new char[length + 2];
-    memset(normal_vertex_shader, 0, sizeof(shadow_vertex_shader));
-    t.read(shadow_vertex_shader, length);
-    shadow_vertex_shader[length] = '\n';
-    shadow_vertex_shader[length + 1] = 0;
-    t.close();
-
-
-    t.open((pwd + "./shader/shadow_fragment_shader.glsl").c_str());
-    t.seekg(0, std::ios::end);
-    length = t.tellg();
-    t.seekg(0, std::ios::beg);
-    shadow_fragment_shader = new char[length + 2];
-    memset(normal_vertex_shader, 0, sizeof(shadow_fragment_shader));
-    t.read(shadow_fragment_shader, length);
-    shadow_fragment_shader[length] = '\n';
-    shadow_fragment_shader[length + 1] = 0;
-    t.close();
-
-    GLint success;
-    GLchar infoLog[512];
-
-    shadow_program.vertex_shader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(shadow_program.vertex_shader, 1, &shadow_vertex_shader, NULL);
-    glCompileShader(shadow_program.vertex_shader);
-
-    glGetShaderiv(shadow_program.vertex_shader, GL_COMPILE_STATUS, &success);
-    if (!success) {
-        glGetShaderInfoLog(shadow_program.vertex_shader, 512, NULL, infoLog);
-        std::cerr << "[COMPILER] " << infoLog << std::endl;
-        exit(EXIT_FAILURE);
-    }
-
-    shadow_program.fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(shadow_program.fragment_shader, 1, &shadow_fragment_shader, NULL);
-    glCompileShader(shadow_program.fragment_shader);
-
-    glGetShaderiv(shadow_program.fragment_shader, GL_COMPILE_STATUS, &success);
-    if (!success) {
-        glGetShaderInfoLog(shadow_program.fragment_shader, 512, NULL, infoLog);
-        std::cerr << "[COMPILER] " << infoLog << std::endl;
-        exit(EXIT_FAILURE);
-    }
-
-    shadow_program.program = glCreateProgram();
-    glAttachShader(shadow_program.program, shadow_program.vertex_shader);
-    glAttachShader(shadow_program.program, shadow_program.fragment_shader);
-    glLinkProgram(shadow_program.program);
+    read_compile_program(
+        (pwd + "./shader/shadow_vertext_shader.glsl").c_str(),
+        (pwd + "./shader/shadow_fragment_shader.glsl").c_str(),
+        &shadow_program
+    );
 
     {
         shadow_program.a_Position = glGetAttribLocation(shadow_program.program, "a_Position");
@@ -163,4 +66,77 @@ void create_shadow_program(void) {
         shadow_program.V = glGetUniformLocation(shadow_program.program, "V");
         shadow_program.P = glGetUniformLocation(shadow_program.program, "P");
     }
+}
+
+void create_cross_program(void) {
+    read_compile_program(
+        (pwd + "./shader/cross_vertext_shader.glsl").c_str(),
+        (pwd + "./shader/cross_fragment_shader.glsl").c_str(),
+        &cross_program
+    );
+
+    cross_program.a_Position = glGetAttribLocation(cross_program.program, "a_Position");
+    cross_program.fbo = glGetUniformLocation(cross_program.program, "fbo");
+}
+
+void read_compile_program(const char *vshader, const char *fshader, Program *p) {
+    std::ifstream t;
+    int length;
+
+    std::string content;
+    t.open(vshader);
+    t.seekg(0, std::ios::end);
+    length = t.tellg();
+    t.seekg(0, std::ios::beg);
+    vertex_shader_buf = new char[length + 2];
+    memset(vertex_shader_buf, 0, sizeof(vertex_shader_buf));
+    t.read(vertex_shader_buf, length);
+    vertex_shader_buf[length] = '\n';
+    vertex_shader_buf[length + 1] = 0;
+    t.close();
+
+
+    t.open(fshader);
+    t.seekg(0, std::ios::end);
+    length = t.tellg();
+    t.seekg(0, std::ios::beg);
+    fragment_shader_buf = new char[length + 2];
+    memset(fragment_shader_buf, 0, sizeof(fragment_shader_buf));
+    t.read(fragment_shader_buf, length);
+    fragment_shader_buf[length] = '\n';
+    fragment_shader_buf[length + 1] = 0;
+    t.close();
+
+    GLint success;
+    GLchar infoLog[512];
+
+    p->vertex_shader = glCreateShader(GL_VERTEX_SHADER);
+    glShaderSource(p->vertex_shader, 1, &vertex_shader_buf, NULL);
+    glCompileShader(p->vertex_shader);
+
+    glGetShaderiv(p->vertex_shader, GL_COMPILE_STATUS, &success);
+    if (!success) {
+        glGetShaderInfoLog(p->vertex_shader, 512, NULL, infoLog);
+        std::cerr << "[COMPILER] " << infoLog << std::endl;
+        exit(EXIT_FAILURE);
+    }
+
+    p->fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
+    glShaderSource(p->fragment_shader, 1, &fragment_shader_buf, NULL);
+    glCompileShader(p->fragment_shader);
+
+    glGetShaderiv(p->fragment_shader, GL_COMPILE_STATUS, &success);
+    if (!success) {
+        glGetShaderInfoLog(p->fragment_shader, 512, NULL, infoLog);
+        std::cerr << "[COMPILER] " << infoLog << std::endl;
+        exit(EXIT_FAILURE);
+    }
+
+    p->program = glCreateProgram();
+    glAttachShader(p->program, p->vertex_shader);
+    glAttachShader(p->program, p->fragment_shader);
+    glLinkProgram(p->program);
+
+    delete (vertex_shader_buf);
+    delete (fragment_shader_buf);
 }

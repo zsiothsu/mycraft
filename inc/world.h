@@ -7,22 +7,27 @@
 
 #define WORLD_SIZE 16
 
-struct chunk {
-    int x;
-    int z;
-    uint8_t block[WORLD_SIZE][64][WORLD_SIZE];
+namespace World {
 
-    chunk() {
-        x = 0;
-        z = 0;
-        memset(block, 0, sizeof(block));
-    }
-};
+    struct chunk {
+        int x;
+        int z;
+        uint8_t block[WORLD_SIZE][64][WORLD_SIZE];
 
-extern chunk *world_map[16][16];
+        chunk() {
+            x = 0;
+            z = 0;
+            memset(block, 0, sizeof(block));
+        }
+    };
 
-void generate_map(void);
+    extern chunk *world_map[16][16];
 
-void build_house(void);
+    void generate_map(void);
+
+    void build_house(void);
+
+    int have_block(int x, int y, int z);
+}
 
 #endif //FINAL_CPP_WORLD_H

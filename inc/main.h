@@ -7,6 +7,7 @@
 #include "gl_program.h"
 #include "world.h"
 #include "callback.h"
+#include "physics.h"
 
 const static uint32_t texture_index[] = {
         GL_TEXTURE0, GL_TEXTURE1, GL_TEXTURE2, GL_TEXTURE3, GL_TEXTURE4,
@@ -67,12 +68,6 @@ const static uint8_t id_stone = 3;
 const static uint8_t id_brick = 4;
 
 const static GLuint OFFSCREEN_WIDTH = 2048, OFFSCREEN_HEIGHT = 2048;
-
-extern float g_x;
-extern float g_y;
-extern float g_z;
-extern float g_yaw;
-extern float g_pitch;
 
 
 #endif //FINAL_CPP_MAIN_H

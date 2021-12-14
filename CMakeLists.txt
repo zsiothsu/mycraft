@@ -15,7 +15,7 @@ INCLUDE_DIRECTORIES(
 )
 
 LINK_DIRECTORIES(
-        ${PROJECT_SOURCE_DIR}/lib
+        ${PROJECT_SOURCE_DIR}/lib/gcc
         /usr/lib
         /usr/local/lib
         ${CMAKE_DL_LIBS}
@@ -32,3 +32,4 @@ SET( SRCS
 
 ADD_EXECUTABLE(${PROJECT_NAME} ${SRCS})
 TARGET_LINK_LIBRARIES(${PROJECT_NAME} glfw3 X11 GL dl pthread)
+#TARGET_LINK_LIBRARIES(${PROJECT_NAME} glfw3  pthread)

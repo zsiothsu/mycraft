@@ -1,5 +1,6 @@
 #include "callback.h"
 #include <iostream>
+#include "physics.h"
 
 bool key_state[400];
 
@@ -8,31 +9,7 @@ void error_callback(int error, const char *description) {
 }
 
 void key_handler(void) {
-    static float speed = 0.4;
-    float _yaw = g_yaw / 180 * M_PI;
-
-    if (key_state[GLFW_KEY_W]) {
-        g_x = g_x + sin(_yaw) * speed;
-        g_z = g_z - cos(_yaw) * speed;
-    }
-    if (key_state[GLFW_KEY_S]) {
-        g_x = g_x - sin(_yaw) * speed;
-        g_z = g_z + cos(_yaw) * speed;
-    }
-    if (key_state[GLFW_KEY_A]) {
-        g_x = g_x - sin(_yaw + M_PI / 2) * speed;
-        g_z = g_z + cos(_yaw + M_PI / 2) * speed;
-    }
-    if (key_state[GLFW_KEY_D]) {
-        g_x = g_x + sin(_yaw + M_PI / 2) * speed;
-        g_z = g_z - cos(_yaw + M_PI / 2) * speed;
-    }
-    if (key_state[GLFW_KEY_LEFT_SHIFT]) {
-        g_y -= 0.1 * speed;
-    }
-    if (key_state[GLFW_KEY_SPACE]) {
-        g_y += 0.1 * speed;
-    }
+    Physics::update();
 }
 
 void key_callback(GLFWwindow *window, int key, int scancode, int action, int mode) {
@@ -60,7 +37,7 @@ void mouse_button_callback(GLFWwindow *window, int button, int action, int mods)
 void cursor_position_callback(GLFWwindow *window, double x, double y) {
     static bool first_move = true;
     static GLfloat lastX, lastY;
-    static GLfloat mouse_step = 0.3;
+    static GLfloat mouse_step = 0.2;
 
     if (first_move) {
         lastX = x, lastY = y;
@@ -73,17 +50,17 @@ void cursor_position_callback(GLFWwindow *window, double x, double y) {
     lastY = y;
 
     if (dx > 0) {
-        g_yaw = g_yaw + mouse_step * dx;
-        g_yaw = g_yaw > 360.0 ? g_yaw - 360 : g_yaw;
+        Physics::g_yaw = Physics::g_yaw + mouse_step * dx;
+        Physics::g_yaw = Physics::g_yaw > 360.0 ? Physics::g_yaw - 360 : Physics::g_yaw;
     } else if (dx < 0) {
-        g_yaw = g_yaw - mouse_step * -dx;
-        g_yaw = g_yaw < 0 ? g_yaw + 360 : g_yaw;
+        Physics::g_yaw = Physics::g_yaw - mouse_step * -dx;
+        Physics::g_yaw = Physics::g_yaw < 0 ? Physics::g_yaw + 360 : Physics::g_yaw;
     }
     if (dy < 0) {
-        g_pitch = g_pitch + mouse_step * -dy;
-        g_pitch = g_pitch > 90 ? 90 : g_pitch;
+        Physics::g_pitch = Physics::g_pitch + mouse_step * -dy;
+        Physics::g_pitch = Physics::g_pitch > 89 ? 89 : Physics::g_pitch;
     } else if (dy > 0) {
-        g_pitch = g_pitch - mouse_step * dy;
-        g_pitch = g_pitch < -90 ? -90 : g_pitch;
+        Physics::g_pitch = Physics::g_pitch - mouse_step * dy;
+        Physics::g_pitch = Physics::g_pitch < -89 ? -89 : Physics::g_pitch;
     }
 }
