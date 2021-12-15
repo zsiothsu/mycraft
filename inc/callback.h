@@ -11,4 +11,6 @@ void cursor_position_callback( GLFWwindow* window, double x, double y);
 
 void key_handler(void);
 
+void windows_size_callback(GLFWwindow* window, int width, int height);
+
 #endif //FINAL_CPP_CALLBACK_H

@@ -3,6 +3,8 @@
 #include "physics.h"
 
 bool key_state[400];
+extern int WINDOW_WIDTH;
+extern int WINDOW_HEIGHT;
 
 void error_callback(int error, const char *description) {
     fprintf(stderr, "Error: %s\n", description);
@@ -63,4 +65,9 @@ void cursor_position_callback(GLFWwindow *window, double x, double y) {
         Physics::g_pitch = Physics::g_pitch - mouse_step * dy;
         Physics::g_pitch = Physics::g_pitch < -89 ? -89 : Physics::g_pitch;
     }
+}
+
+void windows_size_callback(GLFWwindow* window, int width, int height) {
+    WINDOW_HEIGHT = height;
+    WINDOW_WIDTH = width;
 }

@@ -3,8 +3,6 @@
 #include <iostream>
 #include <cmath>
 #include <chrono>
-#include "glm/glm.hpp"
-#include "glm/gtc/type_ptr.hpp"
 
 #include "world.h"
 
@@ -35,6 +33,10 @@ namespace Physics {
     // boundary
     float pos_x, pos_y, pos_z;
     float neg_x, neg_y, neg_z;
+
+    int look_at_x;
+    int look_at_y;
+    int look_at_z;
 
     int detect_order_xz[4][2] = {
             {-1, 0},
@@ -240,5 +242,169 @@ namespace Physics {
         }
 
         return false;
+    }
+
+
+
+    void look_at(void) {
+        float len = 25.0;
+        float yaw = Physics::g_yaw / 180.0 * M_PI;
+        float pitch = Physics::g_pitch / 180 * M_PI;
+
+        glm::vec3 start = glm::vec3(g_x, g_y, g_z);
+        glm::vec3 end = glm::vec3(
+            g_x + len * cos(pitch) * sin(yaw),
+            g_y + len * sin(pitch),
+            g_z - len * cos(pitch) * cos(yaw)
+        );
+
+        std::optional<glm::vec3> at = ray_trace_blocks(start, end);
+
+        if(at != std::nullopt) {
+            look_at_x = at.value().x;
+            look_at_y = at.value().y;
+            look_at_z = at.value().z;
+            std::clog << "look at "
+                    << look_at_x << " "
+                    << look_at_y << " "
+                    << look_at_z << " "
+                    << std::endl;
+        }
+    }
+
+    std::optional<glm::vec3> ray_trace_blocks(glm::vec3 start, glm::vec3 end) {
+        if(!glm::isnan(start).r && !glm::isnan(end).r) {
+            int intX1 = round(start.x);
+            int intY1 = round(start.y);
+            int intZ1 = round(start.z);
+
+            int intX2 = round(end.x);
+            int intY2 = round(end.y);
+            int intZ2 = round(end.z);
+
+            // if player's head is in block
+            if(World::have_block(intX1, intY1, intZ1)) {
+                return glm::vec3(intX1, intY1, intZ1);
+            }
+
+            // the max detection number
+            int count =  200;
+
+            while (count-- >= 0) {
+                if(glm::isnan(start).r || glm::isnan(end).r) {
+                    return std::nullopt;
+                }
+
+                if(intX1 == intX2 && intY1 == intY2 && intZ1 == intZ2) {
+                    return std::nullopt;
+                }
+
+                bool Xchanged = true;
+                bool Ychanged = true;
+                bool Zchanged = true;
+
+                float newX;
+                float newY;
+                float newZ;
+
+                if(intX2 > intX1) {
+                    newX = (float)intX1 + 1.0f;
+                } else if(intX2 < intX1) {
+                    newX = (float)intX1;
+                } else {
+                    Xchanged = false;
+                }
+
+                if(intY2 > intY1) {
+                    newY = (float)intY1 + 1.0f;
+                } else if(intY2 < intY1) {
+                    newY = (float)intY1;
+                } else {
+                    Ychanged = false;
+                }
+
+                if(intZ2 > intZ1) {
+                    newZ = (float)intZ1 + 1.0f;
+                } else if(intZ2 < intZ1) {
+                    newZ = (float)intZ1;
+                } else {
+                    Zchanged = false;
+                }
+
+                double Xt = 999.0;
+                double Yt = 999.0;
+                double Zt = 999.0;
+                double dX = end.x - start.x;
+                double dY = end.y - start.y;
+                double dZ = end.z - start.z;
+
+
+                if(Xchanged) {
+                    Xt = (newX - start.x) / dX;
+                }
+                if(Ychanged) {
+                    Yt = (newY - start.y) / dY;
+                }
+                if(Zchanged) {
+                    Zt = (newZ - start.z) / dZ;
+                }
+
+                unsigned char direction;
+
+                if(Xt < Yt && Xt < Zt) {
+                    if(intX2 > intX1) {
+                        direction = 4;
+                    } else {
+                        direction = 5;
+                    }
+
+                    start.x = newX;
+                    start.y += dY * Xt;
+                    start.z += dZ * Xt;
+                } else if(Yt < Zt) {
+                    if(intY2 > intY1) {
+                        direction = 0;
+                    } else {
+                        direction = 1;
+                    }
+
+                    start.x += dX * Yt;
+                    start.y = newY;
+                    start.z += dZ * Yt;
+                } else {
+                    if(intZ2 > intZ1) {
+                        direction = 2;
+                    } else {
+                        direction = 3;
+                    }
+
+                    start.x += dX * Zt;
+                    start.y += dY * Zt;
+                    start.z = newZ;
+                }
+
+                intX1 = round(start.x);
+                intY1 = round(start.y);
+                intZ1 = round(start.z);
+
+                if(direction == 5) {
+                    --intX1;
+                }
+                if(direction == 1) {
+                    --intY1;
+                }
+                if(direction == 3) {
+                    --intZ1;
+                }
+
+                if(World::have_block(intX1, intY1, intZ1)) {
+                    return glm::vec3(intX1, intY1, intZ1);
+                }
+            }
+
+            return std::nullopt;
+        }
+
+        return std::nullopt;
     }
 }

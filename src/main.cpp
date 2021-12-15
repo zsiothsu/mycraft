@@ -20,18 +20,12 @@ float light_cX = 16;
 float light_cY = -12;
 float light_cZ = 8;
 
-// mouse event
-float x_start;
-float y_start;
-float is_mousedown = false;
-float mouse_step = 4;
-
 extern std::string pwd;
 GLFWwindow *window;
 GLuint fbo;
 int __last_texture = -1;
-const static int WINDOW_WIDTH = 1920;
-const static int WINDOW_HEIGHT = 1080;
+int WINDOW_WIDTH = 1920;
+int WINDOW_HEIGHT = 1080;
 
 
 void glfw_init(void);
@@ -92,13 +86,13 @@ void glfw_init(void) {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 
-    window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "my craft: 也试试泰拉瑞亚吧", NULL, NULL);
+    window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "my craft: 请认准官方盗版", NULL, NULL);
     if (!window) {
         glfwTerminate();
         exit(EXIT_FAILURE);
     }
 
-//    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    glfwSetWindowSizeCallback(window, windows_size_callback);
     glfwSetInputMode(window, GLFW_STICKY_KEYS, GLFW_TRUE);
     glfwSetKeyCallback(window, key_callback);
     glfwSetCursorPosCallback(window, cursor_position_callback);
@@ -386,8 +380,8 @@ void draw_cube(
 void draw_cross() {
     GLfloat vertices[] = {-0.01, 0, 0,
                         0.01, 0, 0,
-                        0, 0.01 * WINDOW_WIDTH / WINDOW_HEIGHT, 0,
-                        0, -0.01 * WINDOW_WIDTH / WINDOW_HEIGHT, 0};
+                        0, (GLfloat)(0.01 * WINDOW_WIDTH / WINDOW_HEIGHT), 0,
+                        0, (GLfloat)(-0.01 * WINDOW_WIDTH / WINDOW_HEIGHT), 0};
 
     GLuint vertexBuffer;
     glGenVertexArrays(1, &vertexBuffer);
@@ -556,6 +550,8 @@ void begin(void) {
 
         glUseProgram(cross_program.program);
         draw_cross();
+
+        Physics::look_at();
 
         glfwPollEvents();
         key_handler();
