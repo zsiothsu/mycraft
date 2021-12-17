@@ -85,7 +85,7 @@ namespace World {
     }
 
     int have_block(int x, int y, int z) {
-        if (x >= 0 && z >= 0 && y >= 0) {
+        if (x >= 0 && z >= 0 && y >= 0 && y < 64) {
             int chunk_x = x / 16;
             int chunk_z = z / 16;
             int in_x = x % 16;

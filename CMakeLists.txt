@@ -29,7 +29,7 @@ SET( SRCS
     ./src/world.cpp
     ./src/physics.cpp
 )
-
+ADD_COMPILE_OPTIONS(-Og)
 ADD_EXECUTABLE(${PROJECT_NAME} ${SRCS})
 TARGET_LINK_LIBRARIES(${PROJECT_NAME} glfw3 X11 GL dl pthread)
 #TARGET_LINK_LIBRARIES(${PROJECT_NAME} glfw3  pthread)

@@ -92,8 +92,10 @@ void glfw_init(void) {
         exit(EXIT_FAILURE);
     }
 
-    glfwSetWindowSizeCallback(window, windows_size_callback);
-    glfwSetInputMode(window, GLFW_STICKY_KEYS, GLFW_TRUE);
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
+    glfwSetWindowFocusCallback(window, window_focus_callback);
+    glfwSetWindowSizeCallback(window, window_size_callback);
     glfwSetKeyCallback(window, key_callback);
     glfwSetCursorPosCallback(window, cursor_position_callback);
     glfwSetMouseButtonCallback(window, mouse_button_callback);
@@ -551,10 +553,11 @@ void begin(void) {
         glUseProgram(cross_program.program);
         draw_cross();
 
-        Physics::look_at();
+//        Physics::look_at();
 
         glfwPollEvents();
         key_handler();
+        mouse_handler(window);
         glfwSwapBuffers(window);
     }
 

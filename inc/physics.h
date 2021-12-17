@@ -8,15 +8,15 @@
 namespace Physics {
 
     // camera
-    extern float g_x;
-    extern float g_y;
-    extern float g_z;
-    extern float g_yaw;
-    extern float g_pitch;
+    extern double g_x;
+    extern double g_y;
+    extern double g_z;
+    extern double g_yaw;
+    extern double g_pitch;
 
-    extern float lookX;
-    extern float lookY;
-    extern float lookZ;
+    extern double lookX;
+    extern double lookY;
+    extern double lookZ;
 
     void init();
 
@@ -26,15 +26,21 @@ namespace Physics {
 
     void update_position();
 
-    void set_boundary(float dx, float dy, float dz);
+    void set_boundary(double dx, double dy, double dz);
 
-    bool collision_XZ(float next_x, float next_z, int block_x, int block_y, int block_z);
+    bool collision_XZ(double next_x, double next_z, int block_x, int block_y, int block_z);
 
-    bool collision_Y(float next_y, int block_x, int block_y, int block_z);
+    bool collision_Y(double next_y, int block_x, int block_y, int block_z);
 
     void look_at(void);
 
+    void place_block();
+
+    void break_block();
+
     std::optional<glm::vec3> ray_trace_blocks(glm::vec3 start, glm::vec3 end);
+
+    void ray_trace_face(void);
 }
 
 #endif //FINAL_CPP_PHYSICS_H

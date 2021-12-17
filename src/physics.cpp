@@ -1,6 +1,6 @@
 #include "physics.h"
 
-#include <iostream>
+#include <iostream>w
 #include <cmath>
 #include <chrono>
 
@@ -9,34 +9,35 @@
 extern bool key_state[400];
 
 namespace Physics {
-    const static float MAX_SPEED = 0.15;
-    const static float MU = 0.7;
-    const static float GRAVITY_ACCELERATION = -2.8;
-    const static float JUMP_INITIAL_ACCELERATION = 20.0;
-    const static float RUN_INITAIL_ACCELERATION = 1;
-    const static float STEVE_HEIGHT_FEET_TO_EYES = 1.7;
+    const static double MAX_SPEED = 0.15;
+    const static double MU = 0.7;
+    const static double GRAVITY_ACCELERATION = -2.8;
+    const static double JUMP_INITIAL_ACCELERATION = 25.0;
+    const static double RUN_INITAIL_ACCELERATION = 1;
+    const static double STEVE_HEIGHT_FEET_TO_EYES = 1.7;
 
-    const static float BOX_DX = 0.35;
-    const static float BOX_DY = 0.1;
-    const static float BOX_DZ = 0.35;
+    const static double BOX_DX = 0.35;
+    const static double BOX_DY = 0.1;
+    const static double BOX_DZ = 0.35;
 
-    float g_x = 10;
-    float g_y = 10;
-    float g_z = 10;
-    float g_yaw = -45;
-    float g_pitch = 0;
+    double g_x = 10;
+    double g_y = 10;
+    double g_z = 10;
+    double g_yaw = -45;
+    double g_pitch = 0;
 
-    float lookX;
-    float lookY;
-    float lookZ;
+    double lookX;
+    double lookY;
+    double lookZ;
 
     // boundary
-    float pos_x, pos_y, pos_z;
-    float neg_x, neg_y, neg_z;
+    double pos_x, pos_y, pos_z;
+    double neg_x, neg_y, neg_z;
 
     int look_at_x;
     int look_at_y;
     int look_at_z;
+    int look_at_face;
 
     int detect_order_xz[4][2] = {
             {-1, 0},
@@ -52,7 +53,7 @@ namespace Physics {
 
     // time
     auto last_time = std::chrono::system_clock::now();
-    float DELTA_T;
+    double DELTA_T;
 
     void init() {
         last_time = std::chrono::system_clock::now();
@@ -65,14 +66,16 @@ namespace Physics {
         auto time_now = std::chrono::system_clock::now();
         DELTA_T = std::chrono::duration_cast<std::chrono::milliseconds>(time_now - last_time).count();
         DELTA_T /= 1000000.0;
-        if(DELTA_T > 0.05) DELTA_T = 0.05;
+        if (DELTA_T > 0.05) DELTA_T = 0.05;
+
+        DELTA_T = 0.01;
 
         update_acceleration_speed();
         update_position();
     }
 
     void update_acceleration_speed() {
-        float _yaw = g_yaw / 180 * M_PI;
+        double _yaw = g_yaw / 180 * M_PI;
 
         int r_x = round(g_x);
         int r_y_eye = round(g_y);
@@ -116,18 +119,18 @@ namespace Physics {
             F.z -= +cos(_yaw + M_PI / 2);
         }
         if (F.x != 0 && F.y != 0 && F.z != 0) F = glm::normalize(F);
-        acc += F * RUN_INITAIL_ACCELERATION;
+        acc += F * (float) RUN_INITAIL_ACCELERATION;
 
         acceleration.x = acc.x;
         acceleration.y = acc.y;
         acceleration.z = acc.z;
 
         //step2: speed
-        if(collision[1] && key_state[GLFW_KEY_SPACE]) {
+        if (collision[1] && key_state[GLFW_KEY_SPACE]) {
             velocity.y = JUMP_INITIAL_ACCELERATION * DELTA_T;
         }
 
-        velocity += acceleration * DELTA_T;
+        velocity += acceleration * (float) DELTA_T;
 
         if (collision[0] && velocity.y > 0) {
             velocity.y = 0;
@@ -157,7 +160,7 @@ namespace Physics {
         if (velocity.y < -0.5) velocity.y = -0.5;
         glm::vec3 vh = velocity;
         vh.y = 0;
-        float len;
+        double len;
         len = glm::length(vh);
         if (len > 0.2) {
             vh *= 0.2 / len;
@@ -167,9 +170,16 @@ namespace Physics {
     }
 
     void update_position() {
-        float next_x = g_x + velocity.x;
-        float next_y = g_y + velocity.y;
-        float next_z = g_z + velocity.z;
+        if (key_state[GLFW_KEY_R]) {
+            g_x = 10;
+            g_y = 10;
+            g_z = 10;
+        }
+
+
+        double next_x = g_x + velocity.x;
+        double next_y = g_y + velocity.y;
+        double next_z = g_z + velocity.z;
 
         int r_x = round(next_x);
         int r_y_eye = round(next_y);
@@ -186,10 +196,10 @@ namespace Physics {
             }
         }
 
-        if(collision_Y(next_y, r_x, r_y_eye + 1, r_z) && velocity.y > 0) {
-            next_y = r_y_eye + 1 -0.5 - BOX_DY;
+        if (collision_Y(next_y, r_x, r_y_eye + 1, r_z) && velocity.y > 0) {
+            next_y = r_y_eye + 1 - 0.5 - BOX_DY;
         } else if (collision_Y(next_y, r_x, r_y_eye, r_z) && velocity.y > 0) {
-            next_y = r_y_eye -0.5 - BOX_DY;
+            next_y = r_y_eye - 0.5 - BOX_DY;
         }
         if (collision_Y(next_y - STEVE_HEIGHT_FEET_TO_EYES, r_x, r_y_feet - 1, r_z) && velocity.y < 0) {
             next_y = r_y_feet - 1 + 0.5 + BOX_DY + STEVE_HEIGHT_FEET_TO_EYES;
@@ -212,7 +222,7 @@ namespace Physics {
         g_z = next_z;
     }
 
-    void set_boundary(float x, float y, float z) {
+    void set_boundary(double x, double y, double z) {
         pos_x = x + BOX_DX;
         neg_x = x - BOX_DX;
         pos_y = y + BOX_DY;
@@ -221,7 +231,7 @@ namespace Physics {
         neg_z = z - BOX_DZ;
     }
 
-    bool collision_XZ(float next_x, float next_z, int block_x, int block_y, int block_z) {
+    bool collision_XZ(double next_x, double next_z, int block_x, int block_y, int block_z) {
         if (World::have_block(block_x, block_y, block_z)) {
             if (((block_x - 0.5 <= pos_x) && (pos_x <= block_x + 0.5)) ||
                 ((block_x - 0.5 <= neg_x) && (neg_x <= block_x + 0.5)) &&
@@ -233,7 +243,7 @@ namespace Physics {
         return false;
     }
 
-    bool collision_Y(float next_y, int block_x, int block_y, int block_z) {
+    bool collision_Y(double next_y, int block_x, int block_y, int block_z) {
         if (World::have_block(block_x, block_y, block_z) != 0) {
             if (((block_y - 0.5) <= pos_y && (pos_y <= block_y + 0.5)) ||
                 ((block_y - 0.5 <= neg_y) && (neg_y <= block_y + 0.5))) {
@@ -245,35 +255,74 @@ namespace Physics {
     }
 
 
-
     void look_at(void) {
-        float len = 25.0;
-        float yaw = Physics::g_yaw / 180.0 * M_PI;
-        float pitch = Physics::g_pitch / 180 * M_PI;
+        double len = 7.0;
+        double yaw = Physics::g_yaw / 180.0 * M_PI;
+        double pitch = Physics::g_pitch / 180 * M_PI;
 
         glm::vec3 start = glm::vec3(g_x, g_y, g_z);
         glm::vec3 end = glm::vec3(
-            g_x + len * cos(pitch) * sin(yaw),
-            g_y + len * sin(pitch),
-            g_z - len * cos(pitch) * cos(yaw)
+                g_x + len * cos(pitch) * sin(yaw),
+                g_y + len * sin(pitch),
+                g_z - len * cos(pitch) * cos(yaw)
         );
 
         std::optional<glm::vec3> at = ray_trace_blocks(start, end);
 
-        if(at != std::nullopt) {
+        if (at != std::nullopt) {
             look_at_x = at.value().x;
             look_at_y = at.value().y;
             look_at_z = at.value().z;
-            std::clog << "look at "
-                    << look_at_x << " "
-                    << look_at_y << " "
-                    << look_at_z << " "
-                    << std::endl;
+            ray_trace_face();
+        } else {
+            look_at_face = -1;
+        }
+    }
+
+    void place_block() {
+        if (look_at_face != -1) {
+            int x = look_at_x;
+            int y = look_at_y;
+            int z = look_at_z;
+
+            if (look_at_face == 0) y += 1;
+            else if (look_at_face == 1) y -= 1;
+            else if (look_at_face == 2) x -= 1;
+            else if (look_at_face == 3) x += 1;
+            else if (look_at_face == 4) z += 1;
+            else if (look_at_face == 5) z -= 1;
+
+
+            if (!World::have_block(x, y, z)) {
+                if (x >= 0 && z >= 0 && y >= 0 && y < 64) {
+                    int chunk_x = x / 16;
+                    int chunk_z = z / 16;
+                    int in_x = x % 16;
+                    int in_z = z % 16;
+
+                    World::chunk *c = World::world_map[chunk_x][chunk_z];
+
+                    c->block[in_x][y][in_z] = 4;
+                }
+            }
+        }
+    }
+
+    void break_block() {
+        if (World::have_block(look_at_x, look_at_y, look_at_z)) {
+            int chunk_x = look_at_x / 16;
+            int chunk_z = look_at_z / 16;
+            int in_x = look_at_x % 16;
+            int in_z = look_at_z % 16;
+
+            World::chunk *c = World::world_map[chunk_x][chunk_z];
+
+            c->block[in_x][look_at_y][in_z] = 0;
         }
     }
 
     std::optional<glm::vec3> ray_trace_blocks(glm::vec3 start, glm::vec3 end) {
-        if(!glm::isnan(start).r && !glm::isnan(end).r) {
+        if (!glm::isnan(start).r && !glm::isnan(end).r) {
             int intX1 = round(start.x);
             int intY1 = round(start.y);
             int intZ1 = round(start.z);
@@ -283,19 +332,24 @@ namespace Physics {
             int intZ2 = round(end.z);
 
             // if player's head is in block
-            if(World::have_block(intX1, intY1, intZ1)) {
+            if (World::have_block(intX1, intY1, intZ1)) {
                 return glm::vec3(intX1, intY1, intZ1);
             }
 
             // the max detection number
-            int count =  200;
+            int count = 100;
 
             while (count-- >= 0) {
-                if(glm::isnan(start).r || glm::isnan(end).r) {
+
+                if (intX1 < 0 || intY1 < 0 || intZ1 < 0 || intY1 >= 64) {
                     return std::nullopt;
                 }
 
-                if(intX1 == intX2 && intY1 == intY2 && intZ1 == intZ2) {
+                if (glm::isnan(start).r || glm::isnan(end).r) {
+                    return std::nullopt;
+                }
+
+                if (intX1 == intX2 && intY1 == intY2 && intZ1 == intZ2) {
                     return std::nullopt;
                 }
 
@@ -303,30 +357,30 @@ namespace Physics {
                 bool Ychanged = true;
                 bool Zchanged = true;
 
-                float newX;
-                float newY;
-                float newZ;
+                double newX;
+                double newY;
+                double newZ;
 
-                if(intX2 > intX1) {
-                    newX = (float)intX1 + 1.0f;
-                } else if(intX2 < intX1) {
-                    newX = (float)intX1;
+                if (intX2 > intX1) {
+                    newX = (double) intX1 + 1.0f;
+                } else if (intX2 < intX1) {
+                    newX = (double) intX1 - 1.0f;
                 } else {
                     Xchanged = false;
                 }
 
-                if(intY2 > intY1) {
-                    newY = (float)intY1 + 1.0f;
-                } else if(intY2 < intY1) {
-                    newY = (float)intY1;
+                if (intY2 > intY1) {
+                    newY = (double) intY1 + 1.0f;
+                } else if (intY2 < intY1) {
+                    newY = (double) intY1 - 1.0f;
                 } else {
                     Ychanged = false;
                 }
 
-                if(intZ2 > intZ1) {
-                    newZ = (float)intZ1 + 1.0f;
-                } else if(intZ2 < intZ1) {
-                    newZ = (float)intZ1;
+                if (intZ2 > intZ1) {
+                    newZ = (double) intZ1 + 1.0f;
+                } else if (intZ2 < intZ1) {
+                    newZ = (double) intZ1 - 1.0f;
                 } else {
                     Zchanged = false;
                 }
@@ -339,20 +393,29 @@ namespace Physics {
                 double dZ = end.z - start.z;
 
 
-                if(Xchanged) {
+//                if(Xchanged) {
+//                    Xt = (newX - start.x) / dX;
+//                }
+//                if(Ychanged) {
+//                    Yt = (newY - start.y) / dY;
+//                }
+//                if(Zchanged) {
+//                    Zt = (newZ - start.z) / dZ;
+//                }
+                if (Xchanged) {
                     Xt = (newX - start.x) / dX;
                 }
-                if(Ychanged) {
+                if (Ychanged) {
                     Yt = (newY - start.y) / dY;
                 }
-                if(Zchanged) {
+                if (Zchanged) {
                     Zt = (newZ - start.z) / dZ;
                 }
 
                 unsigned char direction;
 
-                if(Xt < Yt && Xt < Zt) {
-                    if(intX2 > intX1) {
+                if (Xt < Yt && Xt < Zt) {
+                    if (intX2 > intX1) {
                         direction = 4;
                     } else {
                         direction = 5;
@@ -361,8 +424,8 @@ namespace Physics {
                     start.x = newX;
                     start.y += dY * Xt;
                     start.z += dZ * Xt;
-                } else if(Yt < Zt) {
-                    if(intY2 > intY1) {
+                } else if (Yt < Zt) {
+                    if (intY2 > intY1) {
                         direction = 0;
                     } else {
                         direction = 1;
@@ -372,7 +435,7 @@ namespace Physics {
                     start.y = newY;
                     start.z += dZ * Yt;
                 } else {
-                    if(intZ2 > intZ1) {
+                    if (intZ2 > intZ1) {
                         direction = 2;
                     } else {
                         direction = 3;
@@ -387,17 +450,7 @@ namespace Physics {
                 intY1 = round(start.y);
                 intZ1 = round(start.z);
 
-                if(direction == 5) {
-                    --intX1;
-                }
-                if(direction == 1) {
-                    --intY1;
-                }
-                if(direction == 3) {
-                    --intZ1;
-                }
-
-                if(World::have_block(intX1, intY1, intZ1)) {
+                if (World::have_block(intX1, intY1, intZ1)) {
                     return glm::vec3(intX1, intY1, intZ1);
                 }
             }
@@ -406,5 +459,125 @@ namespace Physics {
         }
 
         return std::nullopt;
+    }
+
+    void ray_trace_face(void) {
+        double yaw = Physics::g_yaw / 180.0 * M_PI;
+        double pitch = Physics::g_pitch / 180 * M_PI;
+
+//        glm::vec3 start = glm::vec3(g_x, g_y, g_z);
+//        glm::vec3 end = glm::vec3(
+//            g_x + len * cos(pitch) * sin(yaw),
+//            g_y + len * sin(pitch),
+//            g_z - len * cos(pitch) * cos(yaw)
+//        );
+
+        bool face[6] = {};
+
+        // which face is looked
+        if (g_x < look_at_x) face[2] = true;
+        else if (g_x > look_at_x) face[3] = true;
+        if (g_y > look_at_y) face[0] = true;
+        else if (g_y < look_at_y) face[1] = true;
+        if (g_z > look_at_z) face[4] = true;
+        else if (g_z < look_at_z) face[5] = true;
+
+
+        // basic cube module
+        //         -1,1,-1                1,1,-1
+        //                 4 ───────────┐5
+        //                  /          /│
+        //        -1,1,1  0┌──────────┐1│ 1,1,1
+        //                 │          │ │
+        //                 │          │ /
+        //       -1,-1,-1  │ 7        │/ 6 1,-1,-1
+        //                 └──────────┘
+        //                3        2
+        //        -1,-1,1             1,-1,1
+        double nx = look_at_x - 0.5;
+        double px = look_at_x + 0.5;
+        double ny = look_at_y - 0.5;
+        double py = look_at_y + 0.5;
+        double nz = look_at_z - 0.5;
+        double pz = look_at_z + 0.5;
+
+        /*
+         * x = x_0 + ta;
+         * y = y_0 + tb;
+         * z = z_0 + tc;
+         *
+         * t = (x - x_0) / a;
+         * t = (y - y_0) / b;
+         * t = (z - z_0) / c;
+         */
+        
+        double t;
+
+        double a = cos(pitch) * sin(yaw);
+        double b = sin(pitch);
+        double c = - cos(pitch) * cos(yaw);
+
+        look_at_face = -1;
+
+        if (face[0]) {
+            t = (py - g_y) / b;
+            double x1 = g_x + t * a;
+            double z1 = g_z + t * c;
+
+            if (nx <= x1 && x1 <= px && nz <= z1 && z1 <= pz) {
+                look_at_face = 0;
+                return;
+            }
+        }
+        if (face[1]) {
+            t = (ny - g_y) / b;
+            double x1 = g_x + t * a;
+            double z1 = g_z + t * c;
+
+            if (nx <= x1 && x1 <= px && nz <= z1 && z1 <= pz) {
+                look_at_face = 1;
+                return;
+            }
+        }
+        if (face[2]) {
+            t = (nx - g_x) / a;
+            double y1 = g_y + t * b;
+            double z1 = g_z + t * c;
+
+            if (ny <= y1 && y1 <= py && nz <= z1 && z1 <= pz) {
+                look_at_face = 2;
+                return;
+            }
+        }
+        if (face[3]) {
+            t = (px - g_x) / a;
+            double y1 = g_y + t * b;
+            double z1 = g_z + t * c;
+
+            if (ny <= y1 && y1 <= py && nz <= z1 && z1 <= pz) {
+                look_at_face = 3;
+                return;
+            }
+        }
+        if (face[4]) {
+            t = (pz - g_z) / c;
+            double y1 = g_y + t * b;
+            double x1 = g_x + t * a;
+
+            if (ny <= y1 && y1 <= py && nx <= x1 && x1 <= px) {
+                look_at_face = 4;
+                return;
+            }
+        }
+        if (face[5]) {
+            t = (nz - g_z) / c;
+            double y1 = g_y + t * b;
+            double x1 = g_x + t * a;
+
+            if (ny <= y1 && y1 <= py && nx <= x1 && x1 <= px) {
+                look_at_face = 5;
+//                return;
+            }
+        }
     }
 }
