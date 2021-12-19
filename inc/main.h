@@ -55,6 +55,7 @@ const static uint8_t img_log[6] = {10, 10, 9, 9, 9, 9};
 const static uint8_t img_sky[6] = {5, 2, 6, 4, 4, 4};
 const static uint8_t img_brick[6] = {1, 1, 1, 1, 1, 1};
 const static uint8_t img_stone[6] = {11, 11, 11, 11, 11, 11};
+const static uint8_t img_dirt[6] = {2, 2, 2, 2, 2, 2};
 
 const static uint8_t outter_mode = 0;
 const static uint8_t inner_mode = 1;
@@ -66,6 +67,7 @@ const static uint8_t id_grass = 1;
 const static uint8_t id_log_oak = 2;
 const static uint8_t id_stone = 3;
 const static uint8_t id_brick = 4;
+const static uint8_t id_dirt = 5;
 
 const static GLuint OFFSCREEN_WIDTH = 2048, OFFSCREEN_HEIGHT = 2048;
 

@@ -1,6 +1,6 @@
 #include "physics.h"
 
-#include <iostream>w
+#include <iostream>
 #include <cmath>
 #include <chrono>
 
@@ -12,13 +12,13 @@ namespace Physics {
     const static double MAX_SPEED = 0.15;
     const static double MU = 0.7;
     const static double GRAVITY_ACCELERATION = -2.8;
-    const static double JUMP_INITIAL_ACCELERATION = 25.0;
+    const static double JUMP_INITIAL_ACCELERATION = 30.0;
     const static double RUN_INITAIL_ACCELERATION = 1;
     const static double STEVE_HEIGHT_FEET_TO_EYES = 1.7;
 
-    const static double BOX_DX = 0.35;
+    const static double BOX_DX = 0.3;
     const static double BOX_DY = 0.1;
-    const static double BOX_DZ = 0.35;
+    const static double BOX_DZ = 0.3;
 
     double g_x = 10;
     double g_y = 10;

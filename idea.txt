@@ -1,7 +1,0 @@
-for world generation:
-
-let a variable record the max height of an index XZ.
-use it while drawing world and world generation.
-for example: grass generation, rain area limitaion.
-
-

@@ -28,6 +28,10 @@ namespace World {
     void build_house(void);
 
     int have_block(int x, int y, int z);
+
+    void save_world(void);
+
+    void load_world(void);
 }
 
 #endif //FINAL_CPP_WORLD_H

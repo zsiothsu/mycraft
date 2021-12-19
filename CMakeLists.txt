@@ -14,12 +14,23 @@ INCLUDE_DIRECTORIES(
         /user/local/include
 )
 
-LINK_DIRECTORIES(
-        ${PROJECT_SOURCE_DIR}/lib/gcc
-        /usr/lib
-        /usr/local/lib
-        ${CMAKE_DL_LIBS}
-)
+IF (CMAKE_SYSTEM_NAME MATCHES "Linux")
+    LINK_DIRECTORIES(
+            ${PROJECT_SOURCE_DIR}/lib/gcc
+            /usr/lib
+            /usr/local/lib
+            ${CMAKE_DL_LIBS}
+    )
+    ADD_DEFINITIONS(-DSYS_LINUX)
+ELSEIF (CMAKE_SYSTEM_NAME MATCHES "Windows")
+    LINK_DIRECTORIES(
+            ${PROJECT_SOURCE_DIR}/lib/mingw
+            /usr/lib
+            /usr/local/lib
+            ${CMAKE_DL_LIBS}
+    )
+    ADD_DEFINITIONS(-DSYS_WINDOWS)
+ENDIF()
 
 SET( SRCS
     ./src/main.cpp
@@ -28,8 +39,13 @@ SET( SRCS
     ./src/callback.cpp
     ./src/world.cpp
     ./src/physics.cpp
+    ./src/perlin_noise.cpp
 )
-ADD_COMPILE_OPTIONS(-Og)
+
 ADD_EXECUTABLE(${PROJECT_NAME} ${SRCS})
-TARGET_LINK_LIBRARIES(${PROJECT_NAME} glfw3 X11 GL dl pthread)
-#TARGET_LINK_LIBRARIES(${PROJECT_NAME} glfw3  pthread)
+
+IF (CMAKE_SYSTEM_NAME MATCHES "Linux")
+    TARGET_LINK_LIBRARIES(${PROJECT_NAME} glfw3 X11 GL dl pthread)
+ELSEIF (CMAKE_SYSTEM_NAME MATCHES "Windows")
+    TARGET_LINK_LIBRARIES(${PROJECT_NAME} glfw3  pthread)
+ENDIF()

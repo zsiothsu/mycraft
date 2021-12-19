@@ -1,4 +1,10 @@
 #include "world.h"
+#include "perlin_noise.h"
+
+#include <string>
+#include <fstream>
+#include <iostream>
+#include <unistd.h>
 
 namespace World {
     chunk *world_map[16][16];
@@ -6,12 +12,17 @@ namespace World {
     void generate_map(void) {
         for (int i = 0; i < 16; i++) {
             for (int j = 0; j < 16; j++) {
+                if (world_map[i][j] != nullptr) {
+                    delete world_map[i][j];
+                }
                 world_map[i][j] = nullptr;
             }
         }
 
-        for (int _x = 0; _x <= 16; _x++) {
-            for (int _z = 0; _z <= 16; _z++) {
+        Perlin perlin;
+
+        for (int _x = 0; _x < 16; _x++) {
+            for (int _z = 0; _z < 16; _z++) {
                 chunk *new_chunk = new chunk;
                 world_map[_x][_z] = new_chunk;
                 new_chunk->x = _x;
@@ -19,7 +30,27 @@ namespace World {
 
                 for (int x = 0; x < 16; x++) {
                     for (int z = 0; z < 16; z++) {
-                        new_chunk->block[x][0][z] = id_grass;
+                        int world_x = _x * 16 + x;
+                        int world_z = _z * 16 + z;
+
+                        int inth = 0;
+                        for(int i = -2; i < 2; i++) {
+                            for(int j = -2; j < 2;j++) {
+                                double height = perlin.PerlinNoise((float)(world_x + i) / 4 , (float)(world_z + j) / 4);
+                                inth += (int)(fabs(height + 1) * 5);
+                            }
+                        }
+                        inth /= 25;
+
+                        for(int h = 0 ; h < inth;h++) {
+                            new_chunk->block[x][h][z] = id_stone;
+                        }
+                        if(inth > 0) {
+                            new_chunk->block[x][inth - 1][z] = id_dirt;
+                            new_chunk->block[x][inth][z] = id_grass;
+                        } else {
+                            new_chunk->block[x][inth][z] = id_grass;
+                        }
                     }
                 }
             }
@@ -98,5 +129,76 @@ namespace World {
         } else {
             return 0;
         }
+    }
+
+    void save_world(void) {
+        std::string pwd;
+        char cwd[100];
+        getcwd(cwd, sizeof(cwd));
+        pwd = std::string(cwd) + "/";
+
+        std::ofstream outFile(pwd + "saves/region.mcr", std::ios::out | std::ios::binary);
+
+        int chunk_size = sizeof(chunk);
+
+        for (int _x = 0; _x < 16; _x++) {
+            for (int _z = 0; _z < 16; _z++) {
+                chunk *c = world_map[_x][_z];
+                if (c != nullptr) {
+                    outFile.write((char *) c, chunk_size);
+                }
+            }
+        }
+
+        outFile.close();
+    }
+
+    void load_world(void) {
+        std::string pwd;
+        char cwd[100];
+        getcwd(cwd, sizeof(cwd));
+        pwd = std::string(cwd) + "/";
+
+        std::ifstream inFile(pwd + "saves/region.mcr", std::ios::in | std::ios::binary);
+
+        for (int i = 0; i < 16; i++) {
+            for (int j = 0; j < 16; j++) {
+                world_map[i][j] = nullptr;
+            }
+        }
+
+        if (inFile) {
+            int chunk_size = sizeof(chunk);
+            char *chunk_data = new char[chunk_size];
+
+            while (inFile.read(chunk_data, chunk_size)) {
+                if (inFile.gcount() != chunk_size) {
+                    std::cerr << "[WORLD] save file is corrupted" << std::endl;
+                    goto world_generation;
+                }
+
+                int _x = *(int *) chunk_data;
+                int _z = *(int *) (chunk_data + sizeof(int));
+
+                world_map[_x][_z] = new chunk;
+                world_map[_x][_z]->x = _x;
+                world_map[_x][_z]->z = _z;
+                memcpy(
+                        world_map[_x][_z]->block,
+                        chunk_data + 2 * sizeof(int),
+                        sizeof(world_map[_x][_z]->block)
+                );
+            }
+
+            std::clog << "[WORLD] read world successfully" << std::endl;
+            goto world_load_end;
+        }
+
+        world_generation:
+        generate_map();
+//        build_house();
+        world_load_end:
+        inFile.close();
+        return;
     }
 }

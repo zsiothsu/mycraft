@@ -1,6 +1,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <cmath>
+#include <map>
 
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
@@ -26,6 +27,14 @@ GLuint fbo;
 int __last_texture = -1;
 int WINDOW_WIDTH = 1920;
 int WINDOW_HEIGHT = 1080;
+
+std::map<uint8_t, uint8_t*> texture_map = {
+        {id_grass, (uint8_t*)img_grass},
+        {id_log_oak, (uint8_t*)img_log},
+        {id_stone, (uint8_t*)img_stone},
+        {id_brick, (uint8_t*)img_brick},
+        {id_dirt, (uint8_t*) img_dirt}
+};
 
 
 void glfw_init(void);
@@ -143,6 +152,8 @@ void gl_texture_init(void) {
             exit(EXIT_FAILURE);
         }
     }
+
+    std::clog << "[INFO] texture loaded" << std::endl;
 }
 
 void draw_map(bool isDepth) {
@@ -169,10 +180,7 @@ void draw_map(bool isDepth) {
                         if (block_id) {
                             uint8_t *imgs;
 
-                            if (block_id == id_grass) imgs = (uint8_t *) img_grass;
-                            else if (block_id == id_stone) imgs = (uint8_t *) img_stone;
-                            else if (block_id == id_brick) imgs = (uint8_t *) img_brick;
-                            else if (block_id == id_log_oak) imgs = (uint8_t *) img_log;
+                            imgs = texture_map[block_id];
 
                             float dx0 = chunk_base_x * 16 + in_x - Physics::g_x;
                             float dy0 = in_y - Physics::g_y;
@@ -525,8 +533,7 @@ void turn_to_inner_mode(GLfloat vertices[48]) {
 }
 
 void begin(void) {
-    World::generate_map();
-    World::build_house();
+    World::load_world();
     Physics::init();
 
 
@@ -561,9 +568,12 @@ void begin(void) {
         glfwSwapBuffers(window);
     }
 
-    glfwDestroyWindow(window);
+    World::save_world();
+    std::clog<< "[WORLD] world saved" << std::endl;
 
+    glfwDestroyWindow(window);
     glfwTerminate();
+
     exit(EXIT_SUCCESS);
 }
 
