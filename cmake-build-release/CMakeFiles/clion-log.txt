@@ -14,4 +14,3 @@
 -- Configuring done
 -- Generating done
 -- Build files have been written to: /run/media/chipen/data/Pro_TEST/Pro_opengl/final_cpp/cmake-build-release
-CMake File API: Expected a com.google.gson.JsonObject but was com.google.gson.JsonPrimitive

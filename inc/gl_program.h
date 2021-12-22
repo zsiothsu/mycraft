@@ -45,9 +45,16 @@ struct CrossProgram : public Program{
     GLint fbo;
 };
 
+struct SingleFaceProgram: public Program {
+    GLint a_Position;
+    GLint a_TexCoord;
+    GLint u_Sampler;
+};
+
 extern NormalProgram normal_program;
 extern ShadowProgram shadow_program;
 extern CrossProgram cross_program;
+extern SingleFaceProgram single_face_program;
 
 void program_init(void);
 
@@ -58,6 +65,8 @@ void create_normal_program(void);
 void create_shadow_program(void);
 
 void create_cross_program(void);
+
+void create_single_face_program(void);
 
 
 #endif //FINAL_CPP_GL_PROGRAM_H

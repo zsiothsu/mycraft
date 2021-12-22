@@ -12,6 +12,12 @@ extern int WINDOW_HEIGHT;
 void key_handler(void) {
     if(!window_focus) return;
 
+    if(key_state[GLFW_KEY_C]) {
+        Physics::g_fov = 10.0;
+    } else {
+        Physics::g_fov = 60.0;
+    }
+
     Physics::update();
 }
 
@@ -45,6 +51,8 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action, int mod
     else if (key == GLFW_KEY_D && action == GLFW_RELEASE) key_state[GLFW_KEY_D] = false;
     if (key == GLFW_KEY_R && action == GLFW_PRESS) key_state[GLFW_KEY_R] = true;
     else if (key == GLFW_KEY_R && action == GLFW_RELEASE) key_state[GLFW_KEY_R] = false;
+    if (key == GLFW_KEY_C && action == GLFW_PRESS) key_state[GLFW_KEY_C] = true;
+    else if (key == GLFW_KEY_C && action == GLFW_RELEASE) key_state[GLFW_KEY_C] = false;
     if (key == GLFW_KEY_LEFT_SHIFT && action == GLFW_PRESS) key_state[GLFW_KEY_LEFT_SHIFT] = true;
     else if (key == GLFW_KEY_LEFT_SHIFT && action == GLFW_RELEASE) key_state[GLFW_KEY_LEFT_SHIFT] = false;
     if (key == GLFW_KEY_SPACE && action == GLFW_PRESS) key_state[GLFW_KEY_SPACE] = true;
@@ -61,6 +69,17 @@ void mouse_button_callback(GLFWwindow *window, int button, int action, int mods)
     else if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE) button_state[GLFW_MOUSE_BUTTON_LEFT] = false;
     if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS) button_state[GLFW_MOUSE_BUTTON_RIGHT] = true;
     else if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_RELEASE) button_state[GLFW_MOUSE_BUTTON_RIGHT] = false;
+}
+
+void mouse_scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
+    if(yoffset > 0) {
+        Physics::holding_block--;
+    } else {
+        Physics::holding_block++;
+    }
+
+    if(Physics::holding_block < 1) Physics::holding_block = id_iron_block;
+    if(Physics::holding_block > id_iron_block) Physics::holding_block = 1;
 }
 
 void cursor_position_callback(GLFWwindow *window, double x, double y) {

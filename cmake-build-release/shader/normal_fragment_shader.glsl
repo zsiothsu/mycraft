@@ -28,12 +28,12 @@ void main() {
         vec3 diffuse = v_LightColor * origin_color.rgb * nDotL;
         non_sun_color = vec4(diffuse, origin_color.a);
 
-//        vec3 shadowCoord = (v_PositionFromLight.xyz/v_PositionFromLight.w)/2.0 + 0.5;
-//        vec4 rgbaDepth = texture2D(u_ShadowMap, shadowCoord.xy);
-//        float depth = rgbaDepth.r;
-//        float visibility = (shadowCoord.z > depth + 0.002) ? 0.5 : 1.0;
-//        gl_FragColor = min(vec4(origin_color.rgb * visibility, origin_color.a), non_sun_color);
-        gl_FragColor = non_sun_color;
+        vec3 shadowCoord = (v_PositionFromLight.xyz/v_PositionFromLight.w)/2.0 + 0.5;
+        vec4 rgbaDepth = texture2D(u_ShadowMap, shadowCoord.xy);
+        float depth = rgbaDepth.r;
+        float visibility = (shadowCoord.z > depth ) ? 0.5 : 1.0;
+        gl_FragColor = min(vec4(origin_color.rgb * visibility, origin_color.a), non_sun_color);
+//        gl_FragColor = non_sun_color;
     } else {
         gl_FragColor = origin_color;
     }

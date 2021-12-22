@@ -12,7 +12,7 @@ namespace Physics {
     const static double MAX_SPEED = 0.15;
     const static double MU = 0.7;
     const static double GRAVITY_ACCELERATION = -2.8;
-    const static double JUMP_INITIAL_ACCELERATION = 30.0;
+    const static double JUMP_INITIAL_ACCELERATION = 31.0;
     const static double RUN_INITAIL_ACCELERATION = 1;
     const static double STEVE_HEIGHT_FEET_TO_EYES = 1.7;
 
@@ -21,7 +21,7 @@ namespace Physics {
     const static double BOX_DZ = 0.3;
 
     double g_x = 10;
-    double g_y = 10;
+    double g_y = 60;
     double g_z = 10;
     double g_yaw = -45;
     double g_pitch = 0;
@@ -29,6 +29,8 @@ namespace Physics {
     double lookX;
     double lookY;
     double lookZ;
+
+    int holding_block = id_grass;
 
     // boundary
     double pos_x, pos_y, pos_z;
@@ -38,6 +40,8 @@ namespace Physics {
     int look_at_y;
     int look_at_z;
     int look_at_face;
+
+    float g_fov = 60.0;
 
     int detect_order_xz[4][2] = {
             {-1, 0},
@@ -63,11 +67,6 @@ namespace Physics {
     }
 
     void update() {
-        auto time_now = std::chrono::system_clock::now();
-        DELTA_T = std::chrono::duration_cast<std::chrono::milliseconds>(time_now - last_time).count();
-        DELTA_T /= 1000000.0;
-        if (DELTA_T > 0.05) DELTA_T = 0.05;
-
         DELTA_T = 0.01;
 
         update_acceleration_speed();
@@ -172,7 +171,7 @@ namespace Physics {
     void update_position() {
         if (key_state[GLFW_KEY_R]) {
             g_x = 10;
-            g_y = 10;
+            g_y = 60;
             g_z = 10;
         }
 
@@ -302,7 +301,7 @@ namespace Physics {
 
                     World::chunk *c = World::world_map[chunk_x][chunk_z];
 
-                    c->block[in_x][y][in_z] = 4;
+                    c->block[in_x][y][in_z] = holding_block;
                 }
             }
         }
@@ -510,12 +509,12 @@ namespace Physics {
          * t = (y - y_0) / b;
          * t = (z - z_0) / c;
          */
-        
+
         double t;
 
         double a = cos(pitch) * sin(yaw);
         double b = sin(pitch);
-        double c = - cos(pitch) * cos(yaw);
+        double c = -cos(pitch) * cos(yaw);
 
         look_at_face = -1;
 

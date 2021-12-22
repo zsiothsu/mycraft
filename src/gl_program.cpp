@@ -8,6 +8,7 @@
 NormalProgram normal_program;
 ShadowProgram shadow_program;
 CrossProgram cross_program;
+SingleFaceProgram single_face_program;
 
 char *vertex_shader_buf;
 char *fragment_shader_buf;
@@ -23,14 +24,15 @@ void program_init(void) {
     create_normal_program();
     create_shadow_program();
     create_cross_program();
+    create_single_face_program();
     std::clog << "[SHADER] Shader program loaded" << std::endl;
 }
 
 void create_normal_program(void) {
     read_compile_program(
-        (pwd + "./shader/normal_vertext_shader.glsl").c_str(),
-        (pwd + "./shader/normal_fragment_shader.glsl").c_str(),
-        &normal_program
+            (pwd + "./shader/normal_vertext_shader.glsl").c_str(),
+            (pwd + "./shader/normal_fragment_shader.glsl").c_str(),
+            &normal_program
     );
 
     {
@@ -55,9 +57,9 @@ void create_normal_program(void) {
 
 void create_shadow_program(void) {
     read_compile_program(
-        (pwd + "./shader/shadow_vertext_shader.glsl").c_str(),
-        (pwd + "./shader/shadow_fragment_shader.glsl").c_str(),
-        &shadow_program
+            (pwd + "./shader/shadow_vertext_shader.glsl").c_str(),
+            (pwd + "./shader/shadow_fragment_shader.glsl").c_str(),
+            &shadow_program
     );
 
     {
@@ -70,13 +72,29 @@ void create_shadow_program(void) {
 
 void create_cross_program(void) {
     read_compile_program(
-        (pwd + "./shader/cross_vertext_shader.glsl").c_str(),
-        (pwd + "./shader/cross_fragment_shader.glsl").c_str(),
-        &cross_program
+            (pwd + "./shader/cross_vertext_shader.glsl").c_str(),
+            (pwd + "./shader/cross_fragment_shader.glsl").c_str(),
+            &cross_program
     );
 
-    cross_program.a_Position = glGetAttribLocation(cross_program.program, "a_Position");
-    cross_program.fbo = glGetUniformLocation(cross_program.program, "fbo");
+    {
+        cross_program.a_Position = glGetAttribLocation(cross_program.program, "a_Position");
+        cross_program.fbo = glGetUniformLocation(cross_program.program, "fbo");
+    }
+}
+
+void create_single_face_program(void) {
+    read_compile_program(
+            (pwd + "./shader/single_block_face_vertext_shader.glsl").c_str(),
+            (pwd + "./shader/single_block_face_fragment_shader.glsl").c_str(),
+            &single_face_program
+    );
+
+    {
+        single_face_program.a_Position = glGetAttribLocation(single_face_program.program, "a_Position");
+        single_face_program.a_TexCoord = glGetAttribLocation(single_face_program.program, "a_TexCoord");
+        single_face_program.u_Sampler = glGetUniformLocation(single_face_program.program, "u_Sampler");
+    }
 }
 
 void read_compile_program(const char *vshader, const char *fshader, Program *p) {

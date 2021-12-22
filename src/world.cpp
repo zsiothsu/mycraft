@@ -36,8 +36,8 @@ namespace World {
                         int inth = 0;
                         for(int i = -2; i < 2; i++) {
                             for(int j = -2; j < 2;j++) {
-                                double height = perlin.PerlinNoise((float)(world_x + i) / 4 , (float)(world_z + j) / 4);
-                                inth += (int)(fabs(height + 1) * 5);
+                                double height = perlin.PerlinNoise((float)(world_x + i) / 10 , (float)(world_z + j) / 10);
+                                inth += (int)(fabs(height + 1) * 10);
                             }
                         }
                         inth /= 25;

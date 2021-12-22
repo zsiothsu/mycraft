@@ -18,6 +18,10 @@ namespace Physics {
     extern double lookY;
     extern double lookZ;
 
+    extern int holding_block;
+
+    extern float g_fov;
+
     void init();
 
     void update();
