@@ -73,99 +73,99 @@ CMakeFiles/final_cpp.dir/src/main.cpp.o: CMakeFiles/final_cpp.dir/flags.make
 CMakeFiles/final_cpp.dir/src/main.cpp.o: ../src/main.cpp
 CMakeFiles/final_cpp.dir/src/main.cpp.o: CMakeFiles/final_cpp.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/run/media/chipen/data/Pro_TEST/Pro_opengl/final_cpp/cmake-build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/final_cpp.dir/src/main.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/final_cpp.dir/src/main.cpp.o -MF CMakeFiles/final_cpp.dir/src/main.cpp.o.d -o CMakeFiles/final_cpp.dir/src/main.cpp.o -c /run/media/chipen/data/Pro_TEST/Pro_opengl/final_cpp/src/main.cpp
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/final_cpp.dir/src/main.cpp.o -MF CMakeFiles/final_cpp.dir/src/main.cpp.o.d -o CMakeFiles/final_cpp.dir/src/main.cpp.o -c /run/media/chipen/data/Pro_TEST/Pro_opengl/final_cpp/src/main.cpp
 
 CMakeFiles/final_cpp.dir/src/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/final_cpp.dir/src/main.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /run/media/chipen/data/Pro_TEST/Pro_opengl/final_cpp/src/main.cpp > CMakeFiles/final_cpp.dir/src/main.cpp.i
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /run/media/chipen/data/Pro_TEST/Pro_opengl/final_cpp/src/main.cpp > CMakeFiles/final_cpp.dir/src/main.cpp.i
 
 CMakeFiles/final_cpp.dir/src/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/final_cpp.dir/src/main.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /run/media/chipen/data/Pro_TEST/Pro_opengl/final_cpp/src/main.cpp -o CMakeFiles/final_cpp.dir/src/main.cpp.s
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /run/media/chipen/data/Pro_TEST/Pro_opengl/final_cpp/src/main.cpp -o CMakeFiles/final_cpp.dir/src/main.cpp.s
 
 CMakeFiles/final_cpp.dir/src/glad.c.o: CMakeFiles/final_cpp.dir/flags.make
 CMakeFiles/final_cpp.dir/src/glad.c.o: ../src/glad.c
 CMakeFiles/final_cpp.dir/src/glad.c.o: CMakeFiles/final_cpp.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/run/media/chipen/data/Pro_TEST/Pro_opengl/final_cpp/cmake-build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/final_cpp.dir/src/glad.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/final_cpp.dir/src/glad.c.o -MF CMakeFiles/final_cpp.dir/src/glad.c.o.d -o CMakeFiles/final_cpp.dir/src/glad.c.o -c /run/media/chipen/data/Pro_TEST/Pro_opengl/final_cpp/src/glad.c
+	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/final_cpp.dir/src/glad.c.o -MF CMakeFiles/final_cpp.dir/src/glad.c.o.d -o CMakeFiles/final_cpp.dir/src/glad.c.o -c /run/media/chipen/data/Pro_TEST/Pro_opengl/final_cpp/src/glad.c
 
 CMakeFiles/final_cpp.dir/src/glad.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/final_cpp.dir/src/glad.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /run/media/chipen/data/Pro_TEST/Pro_opengl/final_cpp/src/glad.c > CMakeFiles/final_cpp.dir/src/glad.c.i
+	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /run/media/chipen/data/Pro_TEST/Pro_opengl/final_cpp/src/glad.c > CMakeFiles/final_cpp.dir/src/glad.c.i
 
 CMakeFiles/final_cpp.dir/src/glad.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/final_cpp.dir/src/glad.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /run/media/chipen/data/Pro_TEST/Pro_opengl/final_cpp/src/glad.c -o CMakeFiles/final_cpp.dir/src/glad.c.s
+	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /run/media/chipen/data/Pro_TEST/Pro_opengl/final_cpp/src/glad.c -o CMakeFiles/final_cpp.dir/src/glad.c.s
 
 CMakeFiles/final_cpp.dir/src/gl_program.cpp.o: CMakeFiles/final_cpp.dir/flags.make
 CMakeFiles/final_cpp.dir/src/gl_program.cpp.o: ../src/gl_program.cpp
 CMakeFiles/final_cpp.dir/src/gl_program.cpp.o: CMakeFiles/final_cpp.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/run/media/chipen/data/Pro_TEST/Pro_opengl/final_cpp/cmake-build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/final_cpp.dir/src/gl_program.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/final_cpp.dir/src/gl_program.cpp.o -MF CMakeFiles/final_cpp.dir/src/gl_program.cpp.o.d -o CMakeFiles/final_cpp.dir/src/gl_program.cpp.o -c /run/media/chipen/data/Pro_TEST/Pro_opengl/final_cpp/src/gl_program.cpp
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/final_cpp.dir/src/gl_program.cpp.o -MF CMakeFiles/final_cpp.dir/src/gl_program.cpp.o.d -o CMakeFiles/final_cpp.dir/src/gl_program.cpp.o -c /run/media/chipen/data/Pro_TEST/Pro_opengl/final_cpp/src/gl_program.cpp
 
 CMakeFiles/final_cpp.dir/src/gl_program.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/final_cpp.dir/src/gl_program.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /run/media/chipen/data/Pro_TEST/Pro_opengl/final_cpp/src/gl_program.cpp > CMakeFiles/final_cpp.dir/src/gl_program.cpp.i
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /run/media/chipen/data/Pro_TEST/Pro_opengl/final_cpp/src/gl_program.cpp > CMakeFiles/final_cpp.dir/src/gl_program.cpp.i
 
 CMakeFiles/final_cpp.dir/src/gl_program.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/final_cpp.dir/src/gl_program.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /run/media/chipen/data/Pro_TEST/Pro_opengl/final_cpp/src/gl_program.cpp -o CMakeFiles/final_cpp.dir/src/gl_program.cpp.s
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /run/media/chipen/data/Pro_TEST/Pro_opengl/final_cpp/src/gl_program.cpp -o CMakeFiles/final_cpp.dir/src/gl_program.cpp.s
 
 CMakeFiles/final_cpp.dir/src/callback.cpp.o: CMakeFiles/final_cpp.dir/flags.make
 CMakeFiles/final_cpp.dir/src/callback.cpp.o: ../src/callback.cpp
 CMakeFiles/final_cpp.dir/src/callback.cpp.o: CMakeFiles/final_cpp.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/run/media/chipen/data/Pro_TEST/Pro_opengl/final_cpp/cmake-build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/final_cpp.dir/src/callback.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/final_cpp.dir/src/callback.cpp.o -MF CMakeFiles/final_cpp.dir/src/callback.cpp.o.d -o CMakeFiles/final_cpp.dir/src/callback.cpp.o -c /run/media/chipen/data/Pro_TEST/Pro_opengl/final_cpp/src/callback.cpp
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/final_cpp.dir/src/callback.cpp.o -MF CMakeFiles/final_cpp.dir/src/callback.cpp.o.d -o CMakeFiles/final_cpp.dir/src/callback.cpp.o -c /run/media/chipen/data/Pro_TEST/Pro_opengl/final_cpp/src/callback.cpp
 
 CMakeFiles/final_cpp.dir/src/callback.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/final_cpp.dir/src/callback.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /run/media/chipen/data/Pro_TEST/Pro_opengl/final_cpp/src/callback.cpp > CMakeFiles/final_cpp.dir/src/callback.cpp.i
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /run/media/chipen/data/Pro_TEST/Pro_opengl/final_cpp/src/callback.cpp > CMakeFiles/final_cpp.dir/src/callback.cpp.i
 
 CMakeFiles/final_cpp.dir/src/callback.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/final_cpp.dir/src/callback.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /run/media/chipen/data/Pro_TEST/Pro_opengl/final_cpp/src/callback.cpp -o CMakeFiles/final_cpp.dir/src/callback.cpp.s
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /run/media/chipen/data/Pro_TEST/Pro_opengl/final_cpp/src/callback.cpp -o CMakeFiles/final_cpp.dir/src/callback.cpp.s
 
 CMakeFiles/final_cpp.dir/src/world.cpp.o: CMakeFiles/final_cpp.dir/flags.make
 CMakeFiles/final_cpp.dir/src/world.cpp.o: ../src/world.cpp
 CMakeFiles/final_cpp.dir/src/world.cpp.o: CMakeFiles/final_cpp.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/run/media/chipen/data/Pro_TEST/Pro_opengl/final_cpp/cmake-build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/final_cpp.dir/src/world.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/final_cpp.dir/src/world.cpp.o -MF CMakeFiles/final_cpp.dir/src/world.cpp.o.d -o CMakeFiles/final_cpp.dir/src/world.cpp.o -c /run/media/chipen/data/Pro_TEST/Pro_opengl/final_cpp/src/world.cpp
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/final_cpp.dir/src/world.cpp.o -MF CMakeFiles/final_cpp.dir/src/world.cpp.o.d -o CMakeFiles/final_cpp.dir/src/world.cpp.o -c /run/media/chipen/data/Pro_TEST/Pro_opengl/final_cpp/src/world.cpp
 
 CMakeFiles/final_cpp.dir/src/world.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/final_cpp.dir/src/world.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /run/media/chipen/data/Pro_TEST/Pro_opengl/final_cpp/src/world.cpp > CMakeFiles/final_cpp.dir/src/world.cpp.i
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /run/media/chipen/data/Pro_TEST/Pro_opengl/final_cpp/src/world.cpp > CMakeFiles/final_cpp.dir/src/world.cpp.i
 
 CMakeFiles/final_cpp.dir/src/world.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/final_cpp.dir/src/world.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /run/media/chipen/data/Pro_TEST/Pro_opengl/final_cpp/src/world.cpp -o CMakeFiles/final_cpp.dir/src/world.cpp.s
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /run/media/chipen/data/Pro_TEST/Pro_opengl/final_cpp/src/world.cpp -o CMakeFiles/final_cpp.dir/src/world.cpp.s
 
 CMakeFiles/final_cpp.dir/src/physics.cpp.o: CMakeFiles/final_cpp.dir/flags.make
 CMakeFiles/final_cpp.dir/src/physics.cpp.o: ../src/physics.cpp
 CMakeFiles/final_cpp.dir/src/physics.cpp.o: CMakeFiles/final_cpp.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/run/media/chipen/data/Pro_TEST/Pro_opengl/final_cpp/cmake-build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/final_cpp.dir/src/physics.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/final_cpp.dir/src/physics.cpp.o -MF CMakeFiles/final_cpp.dir/src/physics.cpp.o.d -o CMakeFiles/final_cpp.dir/src/physics.cpp.o -c /run/media/chipen/data/Pro_TEST/Pro_opengl/final_cpp/src/physics.cpp
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/final_cpp.dir/src/physics.cpp.o -MF CMakeFiles/final_cpp.dir/src/physics.cpp.o.d -o CMakeFiles/final_cpp.dir/src/physics.cpp.o -c /run/media/chipen/data/Pro_TEST/Pro_opengl/final_cpp/src/physics.cpp
 
 CMakeFiles/final_cpp.dir/src/physics.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/final_cpp.dir/src/physics.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /run/media/chipen/data/Pro_TEST/Pro_opengl/final_cpp/src/physics.cpp > CMakeFiles/final_cpp.dir/src/physics.cpp.i
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /run/media/chipen/data/Pro_TEST/Pro_opengl/final_cpp/src/physics.cpp > CMakeFiles/final_cpp.dir/src/physics.cpp.i
 
 CMakeFiles/final_cpp.dir/src/physics.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/final_cpp.dir/src/physics.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /run/media/chipen/data/Pro_TEST/Pro_opengl/final_cpp/src/physics.cpp -o CMakeFiles/final_cpp.dir/src/physics.cpp.s
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /run/media/chipen/data/Pro_TEST/Pro_opengl/final_cpp/src/physics.cpp -o CMakeFiles/final_cpp.dir/src/physics.cpp.s
 
 CMakeFiles/final_cpp.dir/src/perlin_noise.cpp.o: CMakeFiles/final_cpp.dir/flags.make
 CMakeFiles/final_cpp.dir/src/perlin_noise.cpp.o: ../src/perlin_noise.cpp
 CMakeFiles/final_cpp.dir/src/perlin_noise.cpp.o: CMakeFiles/final_cpp.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/run/media/chipen/data/Pro_TEST/Pro_opengl/final_cpp/cmake-build-release/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/final_cpp.dir/src/perlin_noise.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/final_cpp.dir/src/perlin_noise.cpp.o -MF CMakeFiles/final_cpp.dir/src/perlin_noise.cpp.o.d -o CMakeFiles/final_cpp.dir/src/perlin_noise.cpp.o -c /run/media/chipen/data/Pro_TEST/Pro_opengl/final_cpp/src/perlin_noise.cpp
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/final_cpp.dir/src/perlin_noise.cpp.o -MF CMakeFiles/final_cpp.dir/src/perlin_noise.cpp.o.d -o CMakeFiles/final_cpp.dir/src/perlin_noise.cpp.o -c /run/media/chipen/data/Pro_TEST/Pro_opengl/final_cpp/src/perlin_noise.cpp
 
 CMakeFiles/final_cpp.dir/src/perlin_noise.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/final_cpp.dir/src/perlin_noise.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /run/media/chipen/data/Pro_TEST/Pro_opengl/final_cpp/src/perlin_noise.cpp > CMakeFiles/final_cpp.dir/src/perlin_noise.cpp.i
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /run/media/chipen/data/Pro_TEST/Pro_opengl/final_cpp/src/perlin_noise.cpp > CMakeFiles/final_cpp.dir/src/perlin_noise.cpp.i
 
 CMakeFiles/final_cpp.dir/src/perlin_noise.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/final_cpp.dir/src/perlin_noise.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /run/media/chipen/data/Pro_TEST/Pro_opengl/final_cpp/src/perlin_noise.cpp -o CMakeFiles/final_cpp.dir/src/perlin_noise.cpp.s
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /run/media/chipen/data/Pro_TEST/Pro_opengl/final_cpp/src/perlin_noise.cpp -o CMakeFiles/final_cpp.dir/src/perlin_noise.cpp.s
 
 # Object files for target final_cpp
 final_cpp_OBJECTS = \

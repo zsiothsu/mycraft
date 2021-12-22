@@ -302,6 +302,8 @@ namespace Physics {
                     World::chunk *c = World::world_map[chunk_x][chunk_z];
 
                     c->block[in_x][y][in_z] = holding_block;
+
+                    World::update_light(look_at_x, look_at_y, look_at_z);
                 }
             }
         }
@@ -317,6 +319,8 @@ namespace Physics {
             World::chunk *c = World::world_map[chunk_x][chunk_z];
 
             c->block[in_x][look_at_y][in_z] = 0;
+
+            World::update_light(look_at_x, look_at_y, look_at_z);
         }
     }
 
