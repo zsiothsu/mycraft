@@ -324,14 +324,22 @@ void draw_cube(
     //             │btm │
     //             └────┘
     if (!World::have_block(atX, atY + 1, atZ)) {
-        int light = World::get_light(atX, atY + 1, atZ);
+        int light[9];
+        int *p = light;
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1; j++) {
+                *p = World::get_light(atX + i, atY + 1, atZ + j);
+                p++;
+            }
+        }
+
         GLfloat arrtop[48] = {
-                cube[0][0], cube[0][1], cube[0][2], 0, 0, float(light), 1, 0,
-                cube[1][0], cube[1][1], cube[1][2], 1, 0, float(light) , 1, 0,
-                cube[5][0], cube[5][1], cube[5][2], 1, 1, float(light) , 1, 0,
-                cube[0][0], cube[0][1], cube[0][2], 0, 0, float(light) , 1, 0,
-                cube[5][0], cube[5][1], cube[5][2], 1, 1, float(light) , 1, 0,
-                cube[4][0], cube[4][1], cube[4][2], 0, 1, float(light) , 1, 0,
+                cube[0][0], cube[0][1], cube[0][2], 0, 0, float((light[1] + light[2] + light[4] + light[5]) / 4.0), 1, 0,
+                cube[1][0], cube[1][1], cube[1][2], 1, 0, float((light[4] + light[5] + light[7] + light[8]) / 4.0), 1, 0,
+                cube[5][0], cube[5][1], cube[5][2], 1, 1, float((light[3] + light[4] + light[6] + light[7]) / 4.0), 1, 0,
+                cube[0][0], cube[0][1], cube[0][2], 0, 0, float((light[1] + light[2] + light[4] + light[5]) / 4.0), 1, 0,
+                cube[5][0], cube[5][1], cube[5][2], 1, 1, float((light[3] + light[4] + light[6] + light[7]) / 4.0), 1, 0,
+                cube[4][0], cube[4][1], cube[4][2], 0, 1, float((light[0] + light[1] + light[3] + light[4]) / 4.0), 1, 0,
         };
         if (mode) turn_to_inner_mode(arrtop);
         GLuint buffer = init_vertex_buffers(arrtop);
@@ -345,14 +353,22 @@ void draw_cube(
     }
 
     if (!World::have_block(atX, atY - 1, atZ)) {
-        int light = World::get_light(atX, atY - 1, atZ);
+        int light[9];
+        int *p = light;
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1; j++) {
+                *p = World::get_light(atX + i, atY - 1, atZ + j);
+                p++;
+            }
+        }
+
         GLfloat arrbtm[48] = {
-                cube[3][0], cube[3][1], cube[3][2], 0, 0, float(light) * 0.5f, -1, 0,
-                cube[7][0], cube[7][1], cube[7][2], 0, 1, float(light) * 0.5f, -1, 0,
-                cube[6][0], cube[6][1], cube[6][2], 1, 1, float(light) * 0.5f, -1, 0,
-                cube[3][0], cube[3][1], cube[3][2], 0, 0, float(light) * 0.5f, -1, 0,
-                cube[6][0], cube[6][1], cube[6][2], 1, 1, float(light) * 0.5f, -1, 0,
-                cube[2][0], cube[2][1], cube[2][2], 1, 0, float(light) * 0.5f, -1, 0,
+                cube[3][0], cube[3][1], cube[3][2], 0, 0, float((light[1] + light[2] + light[4] + light[5]) / 4.0) * 0.5f, -1, 0,
+                cube[7][0], cube[7][1], cube[7][2], 0, 1, float((light[0] + light[1] + light[3] + light[4]) / 4.0) * 0.5f, -1, 0,
+                cube[6][0], cube[6][1], cube[6][2], 1, 1, float((light[3] + light[4] + light[6] + light[7]) / 4.0) * 0.5f, -1, 0,
+                cube[3][0], cube[3][1], cube[3][2], 0, 0, float((light[1] + light[2] + light[4] + light[5]) / 4.0) * 0.5f, -1, 0,
+                cube[6][0], cube[6][1], cube[6][2], 1, 1, float((light[3] + light[4] + light[6] + light[7]) / 4.0) * 0.5f, -1, 0,
+                cube[2][0], cube[2][1], cube[2][2], 1, 0, float((light[4] + light[5] + light[7] + light[8]) / 4.0) * 0.5f, -1, 0,
         };
         if (mode) turn_to_inner_mode(arrbtm);
         GLuint buffer = init_vertex_buffers(arrbtm);
@@ -366,14 +382,22 @@ void draw_cube(
     }
 
     if (!World::have_block(atX - 1, atY, atZ)) {
-        int light = World::get_light(atX - 1, atY, atZ);
+        int light[9];
+        int *p = light;
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1; j++) {
+                *p = World::get_light(atX - 1, atY + i, atZ + j);
+                p++;
+            }
+        }
+
         GLfloat arrlft[48] = {
-                cube[7][0], cube[7][1], cube[7][2], 0, 0, float(light) * 0.8f, 0, 0,
-                cube[3][0], cube[3][1], cube[3][2], 1, 0, float(light) * 0.8f, 0, 0,
-                cube[0][0], cube[0][1], cube[0][2], 1, 1, float(light) * 0.8f, 0, 0,
-                cube[7][0], cube[7][1], cube[7][2], 0, 0, float(light) * 0.8f, 0, 0,
-                cube[0][0], cube[0][1], cube[0][2], 1, 1, float(light) * 0.8f, 0, 0,
-                cube[4][0], cube[4][1], cube[4][2], 0, 1, float(light) * 0.8f, 0, 0,
+                cube[7][0], cube[7][1], cube[7][2], 0, 0, float((light[0] + light[1] + light[3] + light[4]) / 4.0) * 0.8f, 0, 0,
+                cube[3][0], cube[3][1], cube[3][2], 1, 0, float((light[1] + light[2] + light[4] + light[5]) / 4.0) * 0.8f, 0, 0,
+                cube[0][0], cube[0][1], cube[0][2], 1, 1, float((light[4] + light[5] + light[7] + light[8]) / 4.0) * 0.8f, 0, 0,
+                cube[7][0], cube[7][1], cube[7][2], 0, 0, float((light[0] + light[1] + light[3] + light[4]) / 4.0) * 0.8f, 0, 0,
+                cube[0][0], cube[0][1], cube[0][2], 1, 1, float((light[4] + light[5] + light[7] + light[8]) / 4.0) * 0.8f, 0, 0,
+                cube[4][0], cube[4][1], cube[4][2], 0, 1, float((light[3] + light[4] + light[6] + light[7]) / 4.0) * 0.8f, 0, 0,
         };
         if (mode) turn_to_inner_mode(arrlft);
         GLuint buffer = init_vertex_buffers(arrlft);
@@ -387,14 +411,22 @@ void draw_cube(
     }
 
     if (!World::have_block(atX + 1, atY, atZ)) {
-        int light = World::get_light(atX + 1, atY, atZ);
+        int light[9];
+        int *p = light;
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1; j++) {
+                *p = World::get_light(atX + 1, atY + i, atZ + j);
+                p++;
+            }
+        }
+
         GLfloat arrrit[48] = {
-                cube[2][0], cube[2][1], cube[2][2], 0, 0, float(light)* 0.8f, 0, 0,
-                cube[6][0], cube[6][1], cube[6][2], 1, 0, float(light) * 0.8f, 0, 0,
-                cube[5][0], cube[5][1], cube[5][2], 1, 1, float(light) * 0.8f, 0, 0,
-                cube[2][0], cube[2][1], cube[2][2], 0, 0, float(light) * 0.8f, 0, 0,
-                cube[5][0], cube[5][1], cube[5][2], 1, 1, float(light) * 0.8f, 0, 0,
-                cube[1][0], cube[1][1], cube[1][2], 0, 1, float(light) * 0.8f, 0, 0,
+                cube[2][0], cube[2][1], cube[2][2], 0, 0, float((light[1] + light[2] + light[4] + light[5]) / 4.0) * 0.8f, 0, 0,
+                cube[6][0], cube[6][1], cube[6][2], 1, 0, float((light[0] + light[1] + light[3] + light[4]) / 4.0) * 0.8f, 0, 0,
+                cube[5][0], cube[5][1], cube[5][2], 1, 1, float((light[3] + light[4] + light[6] + light[7]) / 4.0) * 0.8f, 0, 0,
+                cube[2][0], cube[2][1], cube[2][2], 0, 0, float((light[1] + light[2] + light[4] + light[5]) / 4.0) * 0.8f, 0, 0,
+                cube[5][0], cube[5][1], cube[5][2], 1, 1, float((light[3] + light[4] + light[6] + light[7]) / 4.0) * 0.8f, 0, 0,
+                cube[1][0], cube[1][1], cube[1][2], 0, 1, float((light[4] + light[5] + light[7] + light[8]) / 4.0) * 0.8f, 0, 0,
         };
         if (mode) turn_to_inner_mode(arrrit);
         GLuint buffer = init_vertex_buffers(arrrit);
@@ -408,14 +440,22 @@ void draw_cube(
     }
 
     if (!World::have_block(atX, atY, atZ + 1)) {
-        int light = World::get_light(atX, atY, atZ + 1);
+        int light[9];
+        int *p = light;
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1; j++) {
+                *p = World::get_light(atX + i, atY + j, atZ + 1);
+                p++;
+            }
+        }
+
         GLfloat arrfrt[48] = {
-                cube[3][0], cube[3][1], cube[3][2], 0, 0, float(light)* 0.8f, 0, 1,
-                cube[2][0], cube[2][1], cube[2][2], 1, 0, float(light) * 0.8f, 0, 1,
-                cube[1][0], cube[1][1], cube[1][2], 1, 1, float(light) * 0.8f, 0, 1,
-                cube[3][0], cube[3][1], cube[3][2], 0, 0, float(light) * 0.8f, 0, 1,
-                cube[1][0], cube[1][1], cube[1][2], 1, 1, float(light) * 0.8f, 0, 1,
-                cube[0][0], cube[0][1], cube[0][2], 0, 1, float(light) * 0.8f, 0, 1,
+                cube[3][0], cube[3][1], cube[3][2], 0, 0, float((light[0] + light[1] + light[3] + light[4]) / 4.0) * 0.8f, 0, 1,
+                cube[2][0], cube[2][1], cube[2][2], 1, 0, float((light[3] + light[4] + light[6] + light[7]) / 4.0) * 0.8f, 0, 1,
+                cube[1][0], cube[1][1], cube[1][2], 1, 1, float((light[4] + light[5] + light[7] + light[8]) / 4.0) * 0.8f, 0, 1,
+                cube[3][0], cube[3][1], cube[3][2], 0, 0, float((light[0] + light[1] + light[3] + light[4]) / 4.0) * 0.8f, 0, 1,
+                cube[1][0], cube[1][1], cube[1][2], 1, 1, float((light[4] + light[5] + light[7] + light[8]) / 4.0) * 0.8f, 0, 1,
+                cube[0][0], cube[0][1], cube[0][2], 0, 1, float((light[1] + light[2] + light[4] + light[5]) / 4.0) * 0.8f, 0, 1,
         };
         if (mode) turn_to_inner_mode(arrfrt);
         GLuint buffer = init_vertex_buffers(arrfrt);
@@ -429,14 +469,22 @@ void draw_cube(
     }
 
     if (!World::have_block(atX, atY, atZ - 1)) {
-        int light = World::get_light(atX, atY, atZ - 1);
+        int light[9];
+        int *p = light;
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1; j++) {
+                *p = World::get_light(atX + i, atY + j, atZ - 1);
+                p++;
+            }
+        }
+
         GLfloat arrbk[48] = {
-                cube[6][0], cube[6][1], cube[6][2], 0, 0, float(light) * 0.8f, 0, -1,
-                cube[4][0], cube[4][1], cube[4][2], 1, 1, float(light) * 0.8f, 0, -1,
-                cube[5][0], cube[5][1], cube[5][2], 0, 1, float(light) * 0.8f, 0, -1,
-                cube[6][0], cube[6][1], cube[6][2], 0, 0, float(light) * 0.8f, 0, -1,
-                cube[7][0], cube[7][1], cube[7][2], 1, 0, float(light) * 0.8f, 0, -1,
-                cube[4][0], cube[4][1], cube[4][2], 1, 1, float(light) * 0.8f, 0, -1,
+                cube[6][0], cube[6][1], cube[6][2], 0, 0, float((light[3] + light[4] + light[6] + light[7]) / 4.0) * 0.8f, 0, -1,
+                cube[4][0], cube[4][1], cube[4][2], 1, 1, float((light[1] + light[2] + light[4] + light[5]) / 4.0) * 0.8f, 0, -1,
+                cube[5][0], cube[5][1], cube[5][2], 0, 1, float((light[4] + light[5] + light[7] + light[8]) / 4.0) * 0.8f, 0, -1,
+                cube[6][0], cube[6][1], cube[6][2], 0, 0, float((light[3] + light[4] + light[6] + light[7]) / 4.0) * 0.8f, 0, -1,
+                cube[7][0], cube[7][1], cube[7][2], 1, 0, float((light[0] + light[1] + light[3] + light[4]) / 4.0) * 0.8f, 0, -1,
+                cube[4][0], cube[4][1], cube[4][2], 1, 1, float((light[1] + light[2] + light[4] + light[5]) / 4.0) * 0.8f, 0, -1,
         };
         if (mode) turn_to_inner_mode(arrbk);
         GLuint buffer = init_vertex_buffers(arrbk);
