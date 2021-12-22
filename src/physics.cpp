@@ -303,7 +303,8 @@ namespace Physics {
 
                     c->block[in_x][y][in_z] = holding_block;
 
-                    World::update_light(look_at_x, look_at_y, look_at_z);
+                    World::update_light(x, y, z);
+                    std::cout<< "light: " << World::get_light(x, y, z) << std::endl;
                 }
             }
         }

@@ -78,8 +78,8 @@ void mouse_scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
         Physics::holding_block++;
     }
 
-    if(Physics::holding_block < 1) Physics::holding_block = id_iron_block;
-    if(Physics::holding_block > id_iron_block) Physics::holding_block = 1;
+    if(Physics::holding_block < 1) Physics::holding_block = id_sea_lantern;
+    if(Physics::holding_block > id_sea_lantern) Physics::holding_block = 1;
 }
 
 void cursor_position_callback(GLFWwindow *window, double x, double y) {

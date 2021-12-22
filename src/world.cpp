@@ -116,7 +116,7 @@ namespace World {
                 {0,  0,  1},
                 {0,  0,  -1},
         };
-        if (have_block(x, y, z)) {
+        if (have_block(x, y, z) && (have_block(x, y, z) != id_sea_lantern)) {
             set_light(x, y, z, 0);
         } else {
             set_light(x, y, z, 7);
@@ -148,8 +148,9 @@ namespace World {
 
             close_list.insert(index);
 
-            if (have_block(nx, ny, nz) && (nx != x || ny != y || nz != z)) continue;
-            if (have_block(nx, ny, nz) && (nx != x || ny != y || nz != z)) continue;
+            int next_block_id = have_block(nx, ny, nz);
+
+            if (((next_block_id != 0) || (next_block_id != id_sea_lantern)) && (nx != x || ny != y || nz != z)) continue;
 
             if ((abs(nx - x) + abs(ny - y) + abs(nz - z)) > 7) {
                 continue;
@@ -172,7 +173,8 @@ namespace World {
                     int to_x = nx + face[0];
                     int to_y = ny + face[1];
                     int to_z = nz + face[2];
-                    if (!have_block(to_x, to_y, to_z)) {
+                    int to_block_id = have_block(to_x, to_y, to_z);
+                    if (!to_block_id || (to_block_id == id_sea_lantern)) {
                         bool flag_closed = false;
                         for (auto i: close_list) {
                             if (get<0>(i) == to_x && get<1>(i) == to_y && get<2>(i) == to_z) {
@@ -187,7 +189,18 @@ namespace World {
                         max_light = l > max_light ? l : max_light;
                     }
                 }
-                if (flag_have_blocks_above) {
+
+
+                // block or sea_lantern
+                int block_id = have_block(nx, ny, nz);
+                if ((block_id != 0) && (block_id != id_sea_lantern)) {
+                    set_light(nx, ny, nz, 0);
+                } else if (block_id == id_sea_lantern) {
+                    set_light(nx, ny, nz, 15);
+                }
+
+                // select lightest
+                else if (flag_have_blocks_above) {
                     Index idx = Index(nx, ny, nz);
                     if(changed.find(idx) == changed.end()) {
                         set_light(nx, ny, nz, max_light - 1 >= 0 ? max_light - 1 : 0);
@@ -200,10 +213,6 @@ namespace World {
                         }
                     }
                 }
-            }
-
-            if (have_block(nx, ny, nz)) {
-                set_light(nx, ny, nz, 0);
             }
         }
     }

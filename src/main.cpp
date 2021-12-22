@@ -56,6 +56,7 @@ std::map<uint8_t, uint8_t *> texture_map = {
         {id_wool_colored_silver,     (uint8_t *) img_wool_colored_silver},
         {id_wool_colored_white,      (uint8_t *) img_wool_colored_white},
         {id_wool_colored_yellow,     (uint8_t *) img_wool_colored_yellow},
+        {id_sea_lantern,             (uint8_t *) img_sea_lantern},
 };
 
 std::map<uint8_t, uint8_t> blocks_icon{
@@ -81,7 +82,8 @@ std::map<uint8_t, uint8_t> blocks_icon{
         {id_wool_colored_red,        23},
         {id_wool_colored_silver,     24},
         {id_wool_colored_white,      25},
-        {id_wool_colored_yellow,     26}
+        {id_wool_colored_yellow,     26},
+        {id_sea_lantern,             30}
 };
 
 void glfw_init(void);
@@ -126,7 +128,6 @@ int main() {
     glfw_init();
     program_init();
     gl_config();
-    gl_fbo_init();
     gl_texture_init();
 
     begin();
@@ -334,12 +335,18 @@ void draw_cube(
         }
 
         GLfloat arrtop[48] = {
-                cube[0][0], cube[0][1], cube[0][2], 0, 0, float((light[1] + light[2] + light[4] + light[5]) / 4.0), 1, 0,
-                cube[1][0], cube[1][1], cube[1][2], 1, 0, float((light[4] + light[5] + light[7] + light[8]) / 4.0), 1, 0,
-                cube[5][0], cube[5][1], cube[5][2], 1, 1, float((light[3] + light[4] + light[6] + light[7]) / 4.0), 1, 0,
-                cube[0][0], cube[0][1], cube[0][2], 0, 0, float((light[1] + light[2] + light[4] + light[5]) / 4.0), 1, 0,
-                cube[5][0], cube[5][1], cube[5][2], 1, 1, float((light[3] + light[4] + light[6] + light[7]) / 4.0), 1, 0,
-                cube[4][0], cube[4][1], cube[4][2], 0, 1, float((light[0] + light[1] + light[3] + light[4]) / 4.0), 1, 0,
+                cube[0][0], cube[0][1], cube[0][2], 0, 0, float((light[1] + light[2] + light[4] + light[5]) / 4.0), 1,
+                0,
+                cube[1][0], cube[1][1], cube[1][2], 1, 0, float((light[4] + light[5] + light[7] + light[8]) / 4.0), 1,
+                0,
+                cube[5][0], cube[5][1], cube[5][2], 1, 1, float((light[3] + light[4] + light[6] + light[7]) / 4.0), 1,
+                0,
+                cube[0][0], cube[0][1], cube[0][2], 0, 0, float((light[1] + light[2] + light[4] + light[5]) / 4.0), 1,
+                0,
+                cube[5][0], cube[5][1], cube[5][2], 1, 1, float((light[3] + light[4] + light[6] + light[7]) / 4.0), 1,
+                0,
+                cube[4][0], cube[4][1], cube[4][2], 0, 1, float((light[0] + light[1] + light[3] + light[4]) / 4.0), 1,
+                0,
         };
         if (mode) turn_to_inner_mode(arrtop);
         GLuint buffer = init_vertex_buffers(arrtop);
@@ -363,12 +370,18 @@ void draw_cube(
         }
 
         GLfloat arrbtm[48] = {
-                cube[3][0], cube[3][1], cube[3][2], 0, 0, float((light[1] + light[2] + light[4] + light[5]) / 4.0) * 0.5f, -1, 0,
-                cube[7][0], cube[7][1], cube[7][2], 0, 1, float((light[0] + light[1] + light[3] + light[4]) / 4.0) * 0.5f, -1, 0,
-                cube[6][0], cube[6][1], cube[6][2], 1, 1, float((light[3] + light[4] + light[6] + light[7]) / 4.0) * 0.5f, -1, 0,
-                cube[3][0], cube[3][1], cube[3][2], 0, 0, float((light[1] + light[2] + light[4] + light[5]) / 4.0) * 0.5f, -1, 0,
-                cube[6][0], cube[6][1], cube[6][2], 1, 1, float((light[3] + light[4] + light[6] + light[7]) / 4.0) * 0.5f, -1, 0,
-                cube[2][0], cube[2][1], cube[2][2], 1, 0, float((light[4] + light[5] + light[7] + light[8]) / 4.0) * 0.5f, -1, 0,
+                cube[3][0], cube[3][1], cube[3][2], 0, 0,
+                float((light[1] + light[2] + light[4] + light[5]) / 4.0) * 0.5f, -1, 0,
+                cube[7][0], cube[7][1], cube[7][2], 0, 1,
+                float((light[0] + light[1] + light[3] + light[4]) / 4.0) * 0.5f, -1, 0,
+                cube[6][0], cube[6][1], cube[6][2], 1, 1,
+                float((light[3] + light[4] + light[6] + light[7]) / 4.0) * 0.5f, -1, 0,
+                cube[3][0], cube[3][1], cube[3][2], 0, 0,
+                float((light[1] + light[2] + light[4] + light[5]) / 4.0) * 0.5f, -1, 0,
+                cube[6][0], cube[6][1], cube[6][2], 1, 1,
+                float((light[3] + light[4] + light[6] + light[7]) / 4.0) * 0.5f, -1, 0,
+                cube[2][0], cube[2][1], cube[2][2], 1, 0,
+                float((light[4] + light[5] + light[7] + light[8]) / 4.0) * 0.5f, -1, 0,
         };
         if (mode) turn_to_inner_mode(arrbtm);
         GLuint buffer = init_vertex_buffers(arrbtm);
@@ -392,12 +405,18 @@ void draw_cube(
         }
 
         GLfloat arrlft[48] = {
-                cube[7][0], cube[7][1], cube[7][2], 0, 0, float((light[0] + light[1] + light[3] + light[4]) / 4.0) * 0.8f, 0, 0,
-                cube[3][0], cube[3][1], cube[3][2], 1, 0, float((light[1] + light[2] + light[4] + light[5]) / 4.0) * 0.8f, 0, 0,
-                cube[0][0], cube[0][1], cube[0][2], 1, 1, float((light[4] + light[5] + light[7] + light[8]) / 4.0) * 0.8f, 0, 0,
-                cube[7][0], cube[7][1], cube[7][2], 0, 0, float((light[0] + light[1] + light[3] + light[4]) / 4.0) * 0.8f, 0, 0,
-                cube[0][0], cube[0][1], cube[0][2], 1, 1, float((light[4] + light[5] + light[7] + light[8]) / 4.0) * 0.8f, 0, 0,
-                cube[4][0], cube[4][1], cube[4][2], 0, 1, float((light[3] + light[4] + light[6] + light[7]) / 4.0) * 0.8f, 0, 0,
+                cube[7][0], cube[7][1], cube[7][2], 0, 0,
+                float((light[0] + light[1] + light[3] + light[4]) / 4.0) * 0.8f, 0, 0,
+                cube[3][0], cube[3][1], cube[3][2], 1, 0,
+                float((light[1] + light[2] + light[4] + light[5]) / 4.0) * 0.8f, 0, 0,
+                cube[0][0], cube[0][1], cube[0][2], 1, 1,
+                float((light[4] + light[5] + light[7] + light[8]) / 4.0) * 0.8f, 0, 0,
+                cube[7][0], cube[7][1], cube[7][2], 0, 0,
+                float((light[0] + light[1] + light[3] + light[4]) / 4.0) * 0.8f, 0, 0,
+                cube[0][0], cube[0][1], cube[0][2], 1, 1,
+                float((light[4] + light[5] + light[7] + light[8]) / 4.0) * 0.8f, 0, 0,
+                cube[4][0], cube[4][1], cube[4][2], 0, 1,
+                float((light[3] + light[4] + light[6] + light[7]) / 4.0) * 0.8f, 0, 0,
         };
         if (mode) turn_to_inner_mode(arrlft);
         GLuint buffer = init_vertex_buffers(arrlft);
@@ -421,12 +440,18 @@ void draw_cube(
         }
 
         GLfloat arrrit[48] = {
-                cube[2][0], cube[2][1], cube[2][2], 0, 0, float((light[1] + light[2] + light[4] + light[5]) / 4.0) * 0.8f, 0, 0,
-                cube[6][0], cube[6][1], cube[6][2], 1, 0, float((light[0] + light[1] + light[3] + light[4]) / 4.0) * 0.8f, 0, 0,
-                cube[5][0], cube[5][1], cube[5][2], 1, 1, float((light[3] + light[4] + light[6] + light[7]) / 4.0) * 0.8f, 0, 0,
-                cube[2][0], cube[2][1], cube[2][2], 0, 0, float((light[1] + light[2] + light[4] + light[5]) / 4.0) * 0.8f, 0, 0,
-                cube[5][0], cube[5][1], cube[5][2], 1, 1, float((light[3] + light[4] + light[6] + light[7]) / 4.0) * 0.8f, 0, 0,
-                cube[1][0], cube[1][1], cube[1][2], 0, 1, float((light[4] + light[5] + light[7] + light[8]) / 4.0) * 0.8f, 0, 0,
+                cube[2][0], cube[2][1], cube[2][2], 0, 0,
+                float((light[1] + light[2] + light[4] + light[5]) / 4.0) * 0.8f, 0, 0,
+                cube[6][0], cube[6][1], cube[6][2], 1, 0,
+                float((light[0] + light[1] + light[3] + light[4]) / 4.0) * 0.8f, 0, 0,
+                cube[5][0], cube[5][1], cube[5][2], 1, 1,
+                float((light[3] + light[4] + light[6] + light[7]) / 4.0) * 0.8f, 0, 0,
+                cube[2][0], cube[2][1], cube[2][2], 0, 0,
+                float((light[1] + light[2] + light[4] + light[5]) / 4.0) * 0.8f, 0, 0,
+                cube[5][0], cube[5][1], cube[5][2], 1, 1,
+                float((light[3] + light[4] + light[6] + light[7]) / 4.0) * 0.8f, 0, 0,
+                cube[1][0], cube[1][1], cube[1][2], 0, 1,
+                float((light[4] + light[5] + light[7] + light[8]) / 4.0) * 0.8f, 0, 0,
         };
         if (mode) turn_to_inner_mode(arrrit);
         GLuint buffer = init_vertex_buffers(arrrit);
@@ -450,12 +475,18 @@ void draw_cube(
         }
 
         GLfloat arrfrt[48] = {
-                cube[3][0], cube[3][1], cube[3][2], 0, 0, float((light[0] + light[1] + light[3] + light[4]) / 4.0) * 0.8f, 0, 1,
-                cube[2][0], cube[2][1], cube[2][2], 1, 0, float((light[3] + light[4] + light[6] + light[7]) / 4.0) * 0.8f, 0, 1,
-                cube[1][0], cube[1][1], cube[1][2], 1, 1, float((light[4] + light[5] + light[7] + light[8]) / 4.0) * 0.8f, 0, 1,
-                cube[3][0], cube[3][1], cube[3][2], 0, 0, float((light[0] + light[1] + light[3] + light[4]) / 4.0) * 0.8f, 0, 1,
-                cube[1][0], cube[1][1], cube[1][2], 1, 1, float((light[4] + light[5] + light[7] + light[8]) / 4.0) * 0.8f, 0, 1,
-                cube[0][0], cube[0][1], cube[0][2], 0, 1, float((light[1] + light[2] + light[4] + light[5]) / 4.0) * 0.8f, 0, 1,
+                cube[3][0], cube[3][1], cube[3][2], 0, 0,
+                float((light[0] + light[1] + light[3] + light[4]) / 4.0) * 0.8f, 0, 1,
+                cube[2][0], cube[2][1], cube[2][2], 1, 0,
+                float((light[3] + light[4] + light[6] + light[7]) / 4.0) * 0.8f, 0, 1,
+                cube[1][0], cube[1][1], cube[1][2], 1, 1,
+                float((light[4] + light[5] + light[7] + light[8]) / 4.0) * 0.8f, 0, 1,
+                cube[3][0], cube[3][1], cube[3][2], 0, 0,
+                float((light[0] + light[1] + light[3] + light[4]) / 4.0) * 0.8f, 0, 1,
+                cube[1][0], cube[1][1], cube[1][2], 1, 1,
+                float((light[4] + light[5] + light[7] + light[8]) / 4.0) * 0.8f, 0, 1,
+                cube[0][0], cube[0][1], cube[0][2], 0, 1,
+                float((light[1] + light[2] + light[4] + light[5]) / 4.0) * 0.8f, 0, 1,
         };
         if (mode) turn_to_inner_mode(arrfrt);
         GLuint buffer = init_vertex_buffers(arrfrt);
@@ -479,12 +510,18 @@ void draw_cube(
         }
 
         GLfloat arrbk[48] = {
-                cube[6][0], cube[6][1], cube[6][2], 0, 0, float((light[3] + light[4] + light[6] + light[7]) / 4.0) * 0.8f, 0, -1,
-                cube[4][0], cube[4][1], cube[4][2], 1, 1, float((light[1] + light[2] + light[4] + light[5]) / 4.0) * 0.8f, 0, -1,
-                cube[5][0], cube[5][1], cube[5][2], 0, 1, float((light[4] + light[5] + light[7] + light[8]) / 4.0) * 0.8f, 0, -1,
-                cube[6][0], cube[6][1], cube[6][2], 0, 0, float((light[3] + light[4] + light[6] + light[7]) / 4.0) * 0.8f, 0, -1,
-                cube[7][0], cube[7][1], cube[7][2], 1, 0, float((light[0] + light[1] + light[3] + light[4]) / 4.0) * 0.8f, 0, -1,
-                cube[4][0], cube[4][1], cube[4][2], 1, 1, float((light[1] + light[2] + light[4] + light[5]) / 4.0) * 0.8f, 0, -1,
+                cube[6][0], cube[6][1], cube[6][2], 0, 0,
+                float((light[3] + light[4] + light[6] + light[7]) / 4.0) * 0.8f, 0, -1,
+                cube[4][0], cube[4][1], cube[4][2], 1, 1,
+                float((light[1] + light[2] + light[4] + light[5]) / 4.0) * 0.8f, 0, -1,
+                cube[5][0], cube[5][1], cube[5][2], 0, 1,
+                float((light[4] + light[5] + light[7] + light[8]) / 4.0) * 0.8f, 0, -1,
+                cube[6][0], cube[6][1], cube[6][2], 0, 0,
+                float((light[3] + light[4] + light[6] + light[7]) / 4.0) * 0.8f, 0, -1,
+                cube[7][0], cube[7][1], cube[7][2], 1, 0,
+                float((light[0] + light[1] + light[3] + light[4]) / 4.0) * 0.8f, 0, -1,
+                cube[4][0], cube[4][1], cube[4][2], 1, 1,
+                float((light[1] + light[2] + light[4] + light[5]) / 4.0) * 0.8f, 0, -1,
         };
         if (mode) turn_to_inner_mode(arrbk);
         GLuint buffer = init_vertex_buffers(arrbk);

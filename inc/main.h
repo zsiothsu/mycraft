@@ -65,8 +65,9 @@ const static char *img_list[] = {
         "./texture/planks_oak.png",             //27
         "./texture/iron_block.png",             //28
         "./texture/gold_block.png",             //29
+        "./texture/sea_lantern.png",             //30
 };
-const static int texture_count = 30;
+const static int texture_count = 31;
 
 const static uint8_t img_grass[6] = {8, 2, 7, 7, 7, 7};
 const static uint8_t img_log[6] = {10, 10, 9, 9, 9, 9};
@@ -92,6 +93,7 @@ const static uint8_t img_wool_colored_yellow[6] = {26, 26, 26, 26, 26, 26};
 const static uint8_t img_planks_oak[6] = {27, 27, 27, 27, 27, 27};
 const static uint8_t img_iron_block[6] = {28, 28, 28, 28, 28, 28};
 const static uint8_t img_gold_block[6] = {29, 29, 29, 29, 29, 29};
+const static uint8_t img_sea_lantern[6] = {30, 30, 30, 30, 30, 30,};
 
 const static uint8_t outter_mode = 0;
 const static uint8_t inner_mode = 1;
@@ -123,6 +125,7 @@ enum blocks_id {
     id_wool_colored_yellow,
     id_gold_block,
     id_iron_block,
+    id_sea_lantern,
 };
 
 const static GLuint OFFSCREEN_WIDTH = 2048, OFFSCREEN_HEIGHT = 2048;
