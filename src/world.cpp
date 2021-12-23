@@ -150,7 +150,7 @@ namespace World {
 
             int next_block_id = have_block(nx, ny, nz);
 
-            if (((next_block_id != 0) || (next_block_id != id_sea_lantern)) && (nx != x || ny != y || nz != z)) continue;
+            if ((next_block_id != 0) && (nx != x || ny != y || nz != z)) continue;
 
             if ((abs(nx - x) + abs(ny - y) + abs(nz - z)) > 7) {
                 continue;
@@ -271,7 +271,8 @@ namespace World {
 
         if (inFile) {
             int chunk_size = sizeof(chunk);
-            char *chunk_data = new char[chunk_size];
+//            char *chunk_data = new char[chunk_size];
+            char *chunk_data = (char *)malloc(chunk_size);
 
             while (inFile.read(chunk_data, chunk_size)) {
                 if (inFile.gcount() != chunk_size) {

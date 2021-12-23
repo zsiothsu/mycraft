@@ -7,7 +7,7 @@ bool button_state[8];
 bool window_focus = true;
 extern int WINDOW_WIDTH;
 extern int WINDOW_HEIGHT;
-
+extern bool show_handed_block;
 
 void key_handler(void) {
     if(!window_focus) return;
@@ -16,6 +16,11 @@ void key_handler(void) {
         Physics::g_fov = 10.0;
     } else {
         Physics::g_fov = 60.0;
+    }
+
+    if(key_state[GLFW_KEY_F1]) {
+        key_state[GLFW_KEY_F1] = false;
+        show_handed_block = !show_handed_block;
     }
 
     Physics::update();
@@ -57,6 +62,8 @@ void key_callback(GLFWwindow *window, int key, int scancode, int action, int mod
     else if (key == GLFW_KEY_LEFT_SHIFT && action == GLFW_RELEASE) key_state[GLFW_KEY_LEFT_SHIFT] = false;
     if (key == GLFW_KEY_SPACE && action == GLFW_PRESS) key_state[GLFW_KEY_SPACE] = true;
     else if (key == GLFW_KEY_SPACE && action == GLFW_RELEASE) key_state[GLFW_KEY_SPACE] = false;
+    if (key == GLFW_KEY_F1 && action == GLFW_PRESS) key_state[GLFW_KEY_F1] = true;
+    else if (key == GLFW_KEY_F1 && action == GLFW_RELEASE) key_state[GLFW_KEY_F1] = false;
 
     if (key == GLFW_KEY_ESCAPE) {
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);

@@ -1,0 +1,14 @@
+C:\Users\admin\AppData\Local\JetBrains\CLion2021.3\cygwin_cmake\bin\cmake.exe -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /cygdrive/e/Pro_TEST/Pro_opengl/final_cpp
+CMake Error: CMake was unable to find a build program corresponding to "Unix Makefiles".  CMAKE_MAKE_PROGRAM is not set.  You probably need to select a different build tool.
+CMake Error: CMAKE_C_COMPILER not set, after EnableLanguage
+CMake Error: CMAKE_CXX_COMPILER not set, after EnableLanguage
+-- Configuring incomplete, errors occurred!
+See also "/cygdrive/e/Pro_TEST/Pro_opengl/final_cpp/cmake-build-debug-cygwin/CMakeFiles/CMakeOutput.log".
+
+Cannot get compiler information:
+	Compiler exited with error code 1: D:\JetBrains\CLion 2021.3\bin\mingw\bin\g++.exe -xc++ -DSYS_WINDOWS -I/usr/include -I/user/local/include -g -std=gnu++17 -fpch-preprocess -v -dD -E
+	
+	
+	Compiler exited with error code 1: D:\JetBrains\CLion 2021.3\bin\mingw\bin\gcc.exe -xc -DSYS_WINDOWS -I/usr/include -I/user/local/include -g -fpch-preprocess -v -dD -E
+	
+	

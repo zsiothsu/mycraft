@@ -30,7 +30,7 @@ GLFWwindow *window;
 
 int WINDOW_WIDTH = 1280;
 int WINDOW_HEIGHT = 720;
-
+bool show_handed_block = true;
 
 std::map<uint8_t, uint8_t *> texture_map = {
         {id_grass,                   (uint8_t *) img_grass},
@@ -754,11 +754,13 @@ void begin(void) {
         set_sky_light(1, 0.99, 0.95, false);
         draw_map(false);
 
-        glUseProgram(cross_program.program);
-        draw_cross();
+        if (show_handed_block) {
+            glUseProgram(cross_program.program);
+            draw_cross();
 
-        glUseProgram(single_face_program.program);
-        draw_handed_block();
+            glUseProgram(single_face_program.program);
+            draw_handed_block();
+        }
 
         glfwPollEvents();
         key_handler();

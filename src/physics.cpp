@@ -10,10 +10,10 @@ extern bool key_state[400];
 
 namespace Physics {
     const static double MAX_SPEED = 0.15;
-    const static double MU = 0.7;
-    const static double GRAVITY_ACCELERATION = -2.8;
-    const static double JUMP_INITIAL_ACCELERATION = 31.0;
-    const static double RUN_INITAIL_ACCELERATION = 1;
+    const static double MU = 0.65;
+    const static double GRAVITY_ACCELERATION = -4.8;
+    const static double JUMP_INITIAL_ACCELERATION = 90.0;
+    const static double RUN_INITAIL_ACCELERATION = 3;
     const static double STEVE_HEIGHT_FEET_TO_EYES = 1.7;
 
     const static double BOX_DX = 0.3;
@@ -67,7 +67,7 @@ namespace Physics {
     }
 
     void update() {
-        DELTA_T = 0.01;
+        DELTA_T = 0.004;
 
         update_acceleration_speed();
         update_position();
@@ -304,7 +304,6 @@ namespace Physics {
                     c->block[in_x][y][in_z] = holding_block;
 
                     World::update_light(x, y, z);
-                    std::cout<< "light: " << World::get_light(x, y, z) << std::endl;
                 }
             }
         }
