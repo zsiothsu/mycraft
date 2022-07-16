@@ -304,7 +304,6 @@ namespace World {
 
         world_generation:
         generate_map();
-//        build_house();
         world_load_end:
         inFile.close();
         return;

@@ -395,16 +395,6 @@ namespace Physics {
                 double dY = end.y - start.y;
                 double dZ = end.z - start.z;
 
-
-//                if(Xchanged) {
-//                    Xt = (newX - start.x) / dX;
-//                }
-//                if(Ychanged) {
-//                    Yt = (newY - start.y) / dY;
-//                }
-//                if(Zchanged) {
-//                    Zt = (newZ - start.z) / dZ;
-//                }
                 if (Xchanged) {
                     Xt = (newX - start.x) / dX;
                 }

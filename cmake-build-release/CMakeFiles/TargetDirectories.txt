@@ -1,3 +1,0 @@
-/run/media/chipen/data/Pro_TEST/Pro_opengl/final_cpp/cmake-build-release/CMakeFiles/final_cpp.dir
-/run/media/chipen/data/Pro_TEST/Pro_opengl/final_cpp/cmake-build-release/CMakeFiles/edit_cache.dir
-/run/media/chipen/data/Pro_TEST/Pro_opengl/final_cpp/cmake-build-release/CMakeFiles/rebuild_cache.dir
